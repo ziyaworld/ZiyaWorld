@@ -13,6 +13,18 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
+<div id="productViewer" class="product-viewer">
+  <span onclick="closeViewer()" class="viewer-close">✕</span>
+  <img id="viewerImg">
+  <h2 id="viewerName"></h2>
+  <p id="viewerPrice"></p>
+</div>
+
+<div id="imageModal" class="image-modal">
+  <span class="close-modal" onclick="closeImage()">✕</span>
+  <img id="modalImg">
+</div>
+
 <body>
 
   <!-- ================= TOPBAR ================= -->

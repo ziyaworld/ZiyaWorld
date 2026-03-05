@@ -69,6 +69,8 @@ container.innerHTML+=`
 
 <h3>${item.name}</h3>
 
+<img src="${item.image}" onclick="openViewer('${item.name}', ${item.price}, '${item.image}')">
+
 <p class="price">₦${item.price.toLocaleString()}</p>
 
 <div class="qty-box">
@@ -658,3 +660,27 @@ window.onload = function(){
   document.getElementById("checkoutOverlay").style.display = "none";
   closePanels();
 };
+
+function openViewer(name, price, image){
+  document.getElementById("viewerImg").src = image;
+  document.getElementById("viewerName").innerText = name;
+  document.getElementById("viewerPrice").innerText = "₦" + price.toLocaleString();
+
+  document.getElementById("productViewer").style.display = "flex";
+}
+
+function closeViewer(){
+  document.getElementById("productViewer").style.display = "none";
+}
+
+function openImage(src){
+  const modal = document.getElementById("imageModal");
+  const img = document.getElementById("modalImg");
+
+  img.src = src;
+  modal.style.display = "flex";
+}
+
+function closeImage(){
+  document.getElementById("imageModal").style.display = "none";
+}
