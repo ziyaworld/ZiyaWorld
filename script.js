@@ -143,7 +143,7 @@ function addToCart(type, index){
   }
 
   saveCart();
-  alert("Added to cart successfully!");
+  alert("added to cart!");
 
   renderCart();
 }
@@ -382,7 +382,7 @@ function checkout(){
 
     alert("Please complete your bank transfer. Order saved.");
 
-    document.getElementById("").style.display = "none";
+    document.getElementById("checkoutOverlay").style.display = "none";
     renderCart();
     return;
   }
@@ -406,6 +406,19 @@ function checkout(){
     renderCart();
     return;
   }
+
+}
+
+function openCheckout(){
+
+  if(cart.length === 0){
+    alert("Your cart is empty.");
+    return;
+  }
+
+  document.getElementById("checkoutOverlay").style.display = "flex";
+
+renderCheckoutSummary();
 
 }
 
@@ -689,4 +702,18 @@ const menu = document.getElementById("sideMenu")
 
 menu.classList.toggle("active")
 
+}
+
+function changeColor(color){
+
+document.documentElement.style.setProperty("--mainColor", color);
+
+localStorage.setItem("siteColor", color);
+
+}
+
+const savedColor = localStorage.getItem("siteColor");
+
+if(savedColor){
+document.documentElement.style.setProperty("--mainColor", savedColor);
 }

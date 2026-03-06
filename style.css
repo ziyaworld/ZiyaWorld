@@ -838,7 +838,7 @@ topbar{
 .menu-icon{
 font-size:26px;
 cursor:pointer;
-color:white;
+color:rgb(180, 160, 15);
 }
 
 .side-menu{
@@ -848,7 +848,7 @@ top:0;
 width:250px;
 height:100%;
 background:#111;
-color:white;
+color:rgb(24, 27, 9);
 padding:25px;
 transition:0.3s;
 z-index:3000;
