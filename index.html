@@ -28,19 +28,23 @@
 <body>
 
   <!-- ================= TOPBAR ================= -->
-<div class="topbar">
-  <div class="left-menu">
-    <span onclick="showHome()">Home</span>
-    <span onclick="showClothes()">Clothes</span>
-    <span onclick="showShoes()">Shoes</span>
-  </div>
+<div class="menu-icon" onclick="toggleMenu()">
+☰
+</div>
 
-  <div class="right-menu">
-    <span onclick="openCart()">Cart</span>
-    <span onclick="openOrders()">My Orders</span>
-    <span onclick="openSettings()">Settings</span>
-    <span onclick="openContact()">Contact</span>
-  </div>
+<div class="logo">ZIYA</div>
+
+  <div id="sideMenu" class="side-menu">
+
+<span class="close-menu" onclick="toggleMenu()">✕</span>
+
+<a onclick="showClothes()">Clothes</a>
+<a onclick="showShoes()">Shoes</a>
+<a onclick="openCart()">Cart</a>
+<a onclick="openOrders()">Orders</a>
+<a onclick="openSettings()">Settings</a>
+<a onclick="openContact()">Contact</a>
+
 </div>
 
 
@@ -80,9 +84,9 @@
 
   <h3 id="cartTotal">Total: ₦0</h3>
 
-  <button class="main-btn" onclick="goToCheckout()">
-    Proceed to Checkout
-  </button>
+<button onclick="openCheckout()" class="checkout-btn">
+Proceed Order
+</button>
 </div>
 
 

@@ -51,25 +51,23 @@ let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
 function displayProducts(items,type){
 
-const container=document.getElementById("products");
+const container = document.getElementById("products");
 
-container.innerHTML="";
-container.style.display="grid";
+container.innerHTML = "";
+container.style.display = "grid";
 
-document.getElementById("hero").style.display="none";
-document.getElementById("backBtn").style.display="block";
+document.getElementById("hero").style.display = "none";
+document.getElementById("backBtn").style.display = "block";
 
 items.forEach((item,index)=>{
 
-container.innerHTML+=`
+container.innerHTML += `
 
 <div class="card">
 
-<img src="${item.image}">
+<img src="${item.image}" onclick="openViewer('${item.name}', ${item.price}, '${item.image}')">
 
 <h3>${item.name}</h3>
-
-<img src="${item.image}" onclick="openViewer('${item.name}', ${item.price}, '${item.image}')">
 
 <p class="price">₦${item.price.toLocaleString()}</p>
 
@@ -367,7 +365,7 @@ function checkout(){
 
     alert("Order placed successfully! Pay on delivery selected.");
 
-    document.getElementById("checkoutOverlay").style.display = "none";
+    document.getElementById("checkoutOverlay").style.display = "flex";
     renderCart();
     return;
   }
@@ -384,7 +382,7 @@ function checkout(){
 
     alert("Please complete your bank transfer. Order saved.");
 
-    document.getElementById("checkoutOverlay").style.display = "none";
+    document.getElementById("").style.display = "none";
     renderCart();
     return;
   }
@@ -402,7 +400,7 @@ function checkout(){
     cart = [];
     saveCart();
 
-    document.getElementById("checkoutOverlay").style.display = "none";
+    document.getElementById("checkoutOverlay").style.display = "flex";
 
     alert("Card payment successful! Order confirmed.");
     renderCart();
@@ -683,4 +681,12 @@ function openImage(src){
 
 function closeImage(){
   document.getElementById("imageModal").style.display = "none";
+}
+
+function toggleMenu(){
+
+const menu = document.getElementById("sideMenu")
+
+menu.classList.toggle("active")
+
 }
