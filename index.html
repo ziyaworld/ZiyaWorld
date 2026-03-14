@@ -46,7 +46,6 @@
 </div>
 
 
-
 <!-- ================= HERO ================= -->
 <div class="hero" id="hero">
 
@@ -269,11 +268,73 @@ Proceed Order
 
 <!-- ================= FOOTER ================= -->
 <footer>
-  <h2>ZIYAWORLD</h2>
+
   <p>Premium Fashion & Footwear</p>
   <p>© 2026 ZiyaWorld</p>
 </footer>
 
+<div id="transferModal" class="transfer-modal">
+
+  <div class="transfer-box">
+
+    <h3>Bank Transfer</h3>
+
+    <p><strong>Account Name:</strong> Ziyaworld Ltd</p>
+    <p><strong>Account Number:</strong> 1234567890</p>
+    <p><strong>Bank:</strong> Zenith Bank</p>
+
+    <p>
+      <strong>Amount:</strong> ₦
+      <span id="transferAmount">0</span>
+    </p>
+
+    <button id="confirmTransferBtn" class="main-btn">
+      I HAVE PAID
+    </button>
+
+    <button onclick="closeTransferModal()" class="cancel-btn">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+<!-- CARD PAYMENT MODAL -->
+<div id="cardPaymentModal" class="card-payment-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000;">
+
+  <!-- CARD INPUT SECTION -->
+  <div id="cardInputSection" style="background:#fff; padding:20px; border-radius:10px; width:320px; display:flex; flex-direction:column; gap:10px;">
+    <h3 style="text-align:center;">Pay Now: ₦<span id="cardAmountDisplay">0</span></h3>
+
+    <input type="text" id="cardNumber" placeholder="Card Number (XXXX XXXX XXXX XXXX)">
+    <input type="text" id="cardName" placeholder="Cardholder Name">
+    <input type="text" id="cardExpiry" placeholder="MM/YY">
+    <input type="text" id="cardCVV" placeholder="CVV">
+
+    <button id="scanCardBtn">📷 Scan Card</button>
+    <button id="payCardBtn">Pay Now</button>
+    <button onclick="cancelCardPayment()">Cancel</button>
+  </div>
+
+  <!-- CARD SCAN SECTION -->
+  <div id="cardScanSection" style="display:none; background:#fff; padding:20px; border-radius:10px; width:320px; flex-direction:column; gap:10px;">
+    <h3 style="text-align:center;">Align card to scan: ₦<span id="cardAmountScan">0</span></h3>
+    <video id="scanVideo" autoplay style="width:100%; border-radius:10px;"></video>
+    <canvas id="scanCanvas" style="display:none;"></canvas>
+    <button onclick="captureScan()">Capture</button>
+    <button onclick="closeScan()">✖ Cancel Scan</button>
+  </div>
+
+  <!-- PAYMENT SUCCESS -->
+  <div id="paymentSuccess" style="display:none; background:#fff; padding:20px; border-radius:10px; width:320px; text-align:center;">
+    <h3>Payment Successful ✅</h3>
+  </div>
+
+</div>
+
+<!-- Tesseract.js -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 
 <!-- JS -->
 <script src="script.js"></script>
