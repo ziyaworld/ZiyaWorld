@@ -141,6 +141,60 @@ Proceed Order
   </div>
 </div>
 
+<!-- REQUIRED: Paystack library -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+const payButton = document.getElementById("payButton");
+
+payButton.addEventListener("click", () => {
+
+  const amount = 65000; // price in Naira
+  const email = "ziyaworldonline@gmail.com"; // customer email
+  const orderId = "1234567890abcdef"; // your order ID
+
+  let handler = PaystackPop.setup({
+
+    // ✅ PUBLIC KEY ONLY
+    key: "pk_test_e42bfdd67356f1f0db6f49574934828cba61c233",
+
+    email: email,
+
+    // ✅ Paystack uses kobo
+    amount: amount * 100,
+
+    ref: '' + Math.floor(Math.random() * 1000000000 + 1),
+
+    metadata: {
+      orderId: orderId
+    },
+
+    callback: function(response) {
+
+      // ✅ Call YOUR backend to verify payment
+      fetch(`http://localhost:5000/api/payment/verify/${response.reference}`)
+        .then(res => res.json())
+        .then(data => {
+
+          if (data.success) {
+            alert("Payment successful! Order confirmed.");
+            window.location.href = "/orders.html";
+          } else {
+            alert("Payment verification failed.");
+          }
+
+        });
+    },
+
+    onClose: function() {
+      alert("Payment was cancelled.");
+    }
+
+  });
+
+  handler.openIframe();
+});
+</script>
 
 <!-- ================= ORDERS PANEL ================= -->
 <div class="side-panel" id="orderPanel">
