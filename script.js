@@ -367,45 +367,62 @@ function checkout() {
     date: new Date().toLocaleString()
   };
 
-  // ================= PAYMENT TYPES =================
-
-  // 🧾 PAY ON DELIVERY
+  // 1️⃣ Pay on Delivery
   if(payment === "cod") {
-
     newOrder.status = "Processing";
-
     orders.push(newOrder);
     localStorage.setItem("orders", JSON.stringify(orders));
-
     finishCheckout();
-
     alert("Order placed! Status: Processing");
-
     return;
   }
 
-  // 🏦 BANK TRANSFER
-if(payment === "transfer") {
-
-  newOrder.status = "Pending Confirmation";
-
-  // DO NOT SAVE YET
-  pendingTransferOrder = newOrder;
-
-  // Show transfer popup
-  openTransferModal(newOrder.total);
-
-  // Close checkout temporarily
-  document.getElementById("checkoutOverlay").style.display = "none";
-
-  return;
-}
-
- // CARD PAYMENT
-  if(payment === "card") {
-    // Open Card Payment popup
-    openCardPayment(newOrder);
+  // 2️⃣ Bank Transfer
+  if(payment === "transfer") {
+    newOrder.status = "Pending Confirmation";
+    pendingTransferOrder = newOrder;
+    openTransferModal(newOrder.total);
     document.getElementById("checkoutOverlay").style.display = "none";
+    return;
+  }
+
+  // 3️⃣ Card Payment
+  if(payment === "card") {
+    const email = "ziyaworldonline@gmail.com"; // use customer's email
+    const amount = total * 100; // convert to kobo
+
+    let handler = PaystackPop.setup({
+    key: "pk_test_e42bfdd67356f1f0db6f49574934828cba61c233",
+
+    email: email,
+
+    // ✅ Paystack uses kobo
+    amount: amount * 100,
+      currency: "NGN",
+      callback: function(response) {
+        // call your backend to verify payment
+        fetch(`https://YOUR_BACKEND_URL/api/payment/verify/${response.reference}`)
+          .then(res => res.json())
+          .then(data => {
+            if(data.success){
+              newOrder.status = "Completed";
+              orders.push(newOrder);
+              localStorage.setItem("orders", JSON.stringify(orders));
+              finishCheckout();
+              alert("Payment successful! Ref: " + response.reference);
+              renderOrders();
+            } else {
+              alert("Payment verification failed!");
+            }
+          })
+          .catch(err => alert("Verification error: " + err));
+      },
+      onClose: function(){
+        alert("Payment cancelled.");
+      }
+    });
+
+    handler.openIframe();
     return;
   }
 }
