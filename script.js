@@ -397,11 +397,12 @@ function checkout() {
     email: email,
 
     // ✅ Paystack uses kobo
-    amount: amount * 100,
+    amount: 55000 * 100,
+    ref: '' + Math.floor(Math.random() * 1000000000 + 1),
       currency: "NGN",
       callback: function(response) {
         // call your backend to verify payment
-        fetch(`https://YOUR_BACKEND_URL/api/payment/verify/${response.reference}`)
+        fetch("http://localhost:5000/api/payment/verify/" + response.reference)
           .then(res => res.json())
           .then(data => {
             if(data.success){
