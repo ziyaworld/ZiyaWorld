@@ -1,4 +1,5 @@
 const token = localStorage.getItem('token'); // user JWT
+const userId = localStorage.getItem('userId'); // store user ID after login
 
 fetch(`https://ziyaworld-backend.onrender.com/api/orders/user`, {
   headers: { 'Authorization': `Bearer ${token}` }
@@ -6,7 +7,6 @@ fetch(`https://ziyaworld-backend.onrender.com/api/orders/user`, {
 .then(res => res.json())
 .then(orders => {
   const container = document.getElementById('ordersContainer');
-  container.innerHTML = ''; // clear old cards
   if (!orders.length) container.innerHTML = '<p>No orders yet.</p>';
 
   orders.forEach(order => {
@@ -23,7 +23,4 @@ fetch(`https://ziyaworld-backend.onrender.com/api/orders/user`, {
     `;
     container.appendChild(div);
   });
-})
-.catch(err => {
-  console.error("Error fetching orders:", err);
 });

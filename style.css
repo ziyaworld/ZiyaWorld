@@ -17,7 +17,7 @@ html, body {
 body{
   margin:0;
   font-family:'Segoe UI', sans-serif;
-  background:#0c0505;
+  background:#1a0c0c;
 }
 
 /* ================= TOPBAR ================= */
@@ -1148,10 +1148,4 @@ cursor:pointer;
 .icon-btn:hover {
   transform: scale(1.1);
   background: #d4af37; /* gold hover */
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
 }
