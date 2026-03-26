@@ -402,7 +402,7 @@ function checkout() {
       currency: "NGN",
       callback: function(response) {
         // call your backend to verify payment
-        fetch("http://localhost:5000/api/payment/verify/" + response.reference)
+        fetch("https://ziyaworld-backend.onrender.com/api/payment/verify/" + response.reference)
           .then(res => res.json())
           .then(data => {
             if(data.success){
@@ -612,6 +612,32 @@ function openCheckout() {
 function closeCheckout() {
   document.getElementById("checkoutOverlay").style.display = "none";
 }
+
+// FRONTEND: checkout.js
+const token = localStorage.getItem('token'); // JWT of logged-in user
+const userId = localStorage.getItem('userId'); // logged-in user ID
+
+fetch('https://ziyaworld-backend.onrender.com/api/orders', { // <-- use your deployed backend URL
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    userId: userId,
+    email: "ziyaworldonline@gmail.com", // or logged-in user's email
+    items: cartItems, // your cart array
+    amount: totalPrice,
+    status: 'Pending'
+  })
+})
+.then(res => res.json())
+.then(data => {
+  console.log('Order saved:', data);
+  // Optional: redirect to orders page
+  window.location.href = '/myorders.html';
+})
+.catch(err => console.error(err));
 
 // ================= ORDERS =================
 

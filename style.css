@@ -11,13 +11,13 @@ html, body {
 }
 
 :root{
-  --main-color: black;
+  --main-color: rgb(8, 4, 4);
 }
 
 body{
   margin:0;
   font-family:'Segoe UI', sans-serif;
-  background:#120808;
+  background:#0c0505;
 }
 
 /* ================= TOPBAR ================= */
@@ -114,7 +114,7 @@ body{
   max-width: 600px;
   color: #7a7060;
   line-height: 1.6;
-  text-align: center;       /* center text content */
+  text-align: center;      /* center text content */
 }
 
 /* Buttons container */
@@ -127,7 +127,7 @@ body{
 
 .btn-gold{
   background:#c9a84c;
-  color:#0a0805;
+  color:#1f170c;
   border:none;
   padding:12px 38px;
   border-radius: 6px;
@@ -1115,4 +1115,43 @@ cursor:pointer;
 #backBtn:hover {
   background-color: #ffd700;
   color: black;
+}
+
+.order-card { padding: 10px; border: 1px solid #ccc; margin-bottom: 10px; }
+.progress-bar { width: 100%; background: #eee; height: 10px; border-radius: 5px; margin-top: 5px; }
+.progress { height: 10px; background: #4caf50; border-radius: 5px; }
+
+/* ===== TOP RIGHT FLOATING ICONS ===== */
+
+.top-icons {
+  position: fixed;
+  top: 15px;
+  right: 20px;   /* change to left:20px if you want left side */
+  display: flex;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.icon-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  background: #d4af37; /* gold hover */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
 }

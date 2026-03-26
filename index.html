@@ -12,6 +12,7 @@
   <link rel="stylesheet" 
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+<body>
 
 <div id="productViewer" class="product-viewer">
   <span onclick="closeViewer()" class="viewer-close">✕</span>
@@ -25,7 +26,18 @@
   <img id="modalImg">
 </div>
 
-<body>
+  <!-- FLOATING TOP BUTTONS -->
+<div class="top-icons">
+
+  <button class="icon-btn" onclick="openCart()">
+    🛒
+  </button>
+
+  <button class="icon-btn" onclick="openOrders()">
+    📦
+  </button>
+
+</div>
 
   <!-- ================= TOPBAR ================= -->
 <div class="menu-icon" onclick="toggleMenu()">
@@ -38,8 +50,6 @@
 
 <a onclick="showClothes()">Clothes</a>
 <a onclick="showShoes()">Shoes</a>
-<a onclick="openCart()">Cart</a>
-<a onclick="openOrders()">Orders</a>
 <a onclick="openSettings()">Settings</a>
 <a onclick="openContact()">Contact</a>
 
@@ -172,7 +182,7 @@ payButton.addEventListener("click", () => {
     callback: function(response) {
 
       // ✅ Call YOUR backend to verify payment
-      fetch(`http://localhost:5000/api/payment/verify/${response.reference}`)
+      fetch(`https://ziyaworld-backend.onrender.com/api/payment/verify/${response.reference}`)
         .then(res => res.json())
         .then(data => {
 
@@ -289,11 +299,11 @@ payButton.addEventListener("click", () => {
       Umuahia, Abia State
     </p>
 
-    <a href="https://instagram.com/ziyaluxury" target="_blank" class="social instagram">
+    <a href="https://instagram.com/ziyaluxury.ng" target="_blank" class="social instagram">
       <i class="fa-brands fa-instagram"></i>
       <div>
         <span>Instagram</span>
-        <small>@ziyaluxury</small>
+        <small>@ziyaluxury.ng</small>
       </div>
     </a>
 
