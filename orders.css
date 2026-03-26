@@ -1,0 +1,66 @@
+/* ================= orders.css ================= */
+
+.orders-page {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.orders-page h2 {
+  text-align: center;
+  color: #1f3c88;
+  margin-bottom: 20px;
+}
+
+/* Table styling */
+.orders-page table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.orders-page th, .orders-page td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.orders-page th {
+  background-color: #1f3c88;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.orders-page tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Status colors */
+.orders-page td.status-pending {
+  color: #ffa500; /* orange */
+  font-weight: bold;
+}
+
+.orders-page td.status-shipped {
+  color: #17a2b8; /* blue */
+  font-weight: bold;
+}
+
+.orders-page td.status-delivered {
+  color: #28a745; /* green */
+  font-weight: bold;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .orders-page th, .orders-page td {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
