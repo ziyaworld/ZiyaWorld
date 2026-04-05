@@ -38,7 +38,7 @@ function login(){
   const password = document.getElementById("authPassword").value.trim();
 
   if(!email || !password){
-    alert("Please fill all fields");
+    showpopup("Please fill all fields");
     return;
   }
 
@@ -79,7 +79,7 @@ function signup(){
   const password = document.getElementById("authPassword").value.trim();
 
   if(!name || !email || !password){
-    alert("Please fill all fields");
+    showpopup("Please fill all fields");
     return;
   }
 
@@ -89,12 +89,13 @@ function signup(){
     body: JSON.stringify({ name, email, password })
   })
   .then(async res => {
+let data;
 
-    const data = await res.json();
-
-    if(!res.ok){
-      throw new Error(data.message || "Signup failed");
-    }
+try {
+  data = await res.json();
+} catch {
+  throw new Error("Server error (not JSON response)");
+}
 
     return data;
   })
@@ -144,4 +145,4 @@ function showToast(message){
   setTimeout(() => {
     popup.remove();
   }, 1000); // 1 second
-}
+} 
