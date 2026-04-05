@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - ZiyaWorld</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+
+<body>
+
+  <div id="toast" class="toast"></div>
+
+<div class="auth-modal" style="display:flex;">
+
+  <div class="auth-box">
+
+    <h2 id="authTitle">Login</h2>
+
+<input type="text" id="authName" placeholder="Full Name" style="display:none;">
+<input type="email" id="authEmail" placeholder="Email">
+<input type="password" id="authPassword" placeholder="Password">
+
+    <div class="auth-buttons">
+      <button id="loginBtn" onclick="login()">Login</button>
+      <button id="signupBtn" onclick="signup()" style="display:none;">Sign Up</button>
+    </div>
+
+<p id="toggleAuth" onclick="toggleAuth()">
+  Don't have an account? Sign up
+  </p>
+  </div>
+
+</div>
+
+</body>
+<script src="auth.js"></script>
+</html>

@@ -45,7 +45,6 @@ const clothes = [
 // ================= STORAGE =================
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
 // ================= PRODUCT DISPLAY =================
 
@@ -283,10 +282,14 @@ function closeCart(){
 }
 
 
-// Auto-load cart when page loads
-window.addEventListener("load", function(){
+window.onload = function(){
   renderCart();
-});
+  document.getElementById("checkoutOverlay").style.display = "none";
+  closePanels();
+};
+
+
+
 // ================= FULL CHECKOUT SYSTEM =================
 
 
@@ -334,6 +337,41 @@ function updateDeliveryTotal(){
   renderCheckoutSummary();
 }
 
+function saveOrderToBackend(order){
+
+  const token = localStorage.getItem("token");
+
+  if(!token){
+    alert("Please login first!");
+    window.location.href = "auth.html";
+    return;
+  }
+
+  const backendOrder = {
+    items: order.items,
+    amount: order.total,
+    address: order.customer.address,
+    phone: order.customer.phone,
+    name: order.customer.name,
+    paymentMethod: order.paymentMethod
+  };
+
+  fetch('https://ziyaworld-backend.onrender.com/api/orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token   // ⭐ ADD THIS
+    },
+    body: JSON.stringify(backendOrder)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Saved:", data);
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
 
 // PLACE ORDER
 let pendingTransferOrder = null;
@@ -367,24 +405,29 @@ function checkout() {
     date: new Date().toLocaleString()
   };
 
+
   // 1️⃣ Pay on Delivery
-  if(payment === "cod") {
-    newOrder.status = "Processing";
-    orders.push(newOrder);
-    localStorage.setItem("orders", JSON.stringify(orders));
-    finishCheckout();
-    alert("Order placed! Status: Processing");
-    return;
-  }
+if(payment === "cod") {
+  newOrder.status = "Processing";
+
+  saveOrderToBackend(newOrder); // ✅ SEND TO BACKEND
+
+  finishCheckout();
+  alert("Order placed! Status: Processing");
+  renderOrders(); // ⭐ ADD THIS
+  return;
+}
 
   // 2️⃣ Bank Transfer
-  if(payment === "transfer") {
-    newOrder.status = "Pending Confirmation";
-    pendingTransferOrder = newOrder;
-    openTransferModal(newOrder.total);
-    document.getElementById("checkoutOverlay").style.display = "none";
-    return;
-  }
+if(payment === "transfer") {
+  newOrder.status = "Pending Confirmation";
+
+  pendingTransferOrder = newOrder;
+
+  openTransferModal(newOrder.total);
+  document.getElementById("checkoutOverlay").style.display = "none";
+  return;
+}
 
   // 3️⃣ Card Payment
   if(payment === "card") {
@@ -397,7 +440,7 @@ function checkout() {
     email: email,
 
     // ✅ Paystack uses kobo
-    amount: 55000 * 100,
+    amount: total * 100,
     ref: '' + Math.floor(Math.random() * 1000000000 + 1),
       currency: "NGN",
       callback: function(response) {
@@ -405,11 +448,12 @@ function checkout() {
         fetch("https://ziyaworld-backend.onrender.com/api/payment/verify/" + response.reference)
           .then(res => res.json())
           .then(data => {
-            if(data.success){
-              newOrder.status = "Completed";
-              orders.push(newOrder);
-              localStorage.setItem("orders", JSON.stringify(orders));
-              finishCheckout();
+if(data.success){
+  newOrder.status = "Completed";
+
+  saveOrderToBackend(newOrder); // ✅ SEND
+
+  finishCheckout();
               alert("Payment successful! Ref: " + response.reference);
               renderOrders();
             } else {
@@ -458,18 +502,14 @@ document.getElementById("confirmTransferBtn").onclick = function () {
 
   if(!pendingTransferOrder) return;
 
-  orders.push(pendingTransferOrder);
-  localStorage.setItem("orders", JSON.stringify(orders));
+  saveOrderToBackend(pendingTransferOrder); // ✅ SEND
 
   pendingTransferOrder = null;
 
-  finishCheckout(); // clears cart + closes checkout
-
+  finishCheckout();
   closeTransferModal();
 
   alert("Payment recorded! Order is Pending Confirmation.");
-
-  renderOrders();
 };
 
 let pendingCardOrder = null;
@@ -571,10 +611,8 @@ document.getElementById("payCardBtn").onclick = function() {
 
   setTimeout(() => {
     pendingCardOrder.status = "Completed";
+    saveOrderToBackend(pendingCardOrder);
 
-    // Save order
-    orders.push(pendingCardOrder);
-    localStorage.setItem("orders", JSON.stringify(orders));
 
     pendingCardOrder = null;
     document.getElementById("cardPaymentModal").style.display = "none";
@@ -613,32 +651,6 @@ function closeCheckout() {
   document.getElementById("checkoutOverlay").style.display = "none";
 }
 
-// FRONTEND: checkout.js
-const token = localStorage.getItem('token'); // JWT of logged-in user
-const userId = localStorage.getItem('userId'); // logged-in user ID
-
-fetch('https://ziyaworld-backend.onrender.com/api/orders', { // <-- use your deployed backend URL
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
-  },
-  body: JSON.stringify({
-    userId: userId,
-    email: "ziyaworldonline@gmail.com", // or logged-in user's email
-    items: cartItems, // your cart array
-    amount: totalPrice,
-    status: 'Pending'
-  })
-})
-.then(res => res.json())
-.then(data => {
-  console.log('Order saved:', data);
-  // Optional: redirect to orders page
-  window.location.href = '/myorders.html';
-})
-.catch(err => console.error(err));
-
 // ================= ORDERS =================
 
 function openOrders() {
@@ -651,84 +663,125 @@ function openOrders() {
 }
 
 // Render all orders
-function renderOrders() {
+function renderOrders(){
+
+  const token = localStorage.getItem("token");
   const container = document.getElementById("ordersList");
-  if (!container) return;
 
-  const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-  container.innerHTML = "";
-
-  if (savedOrders.length === 0) {
-    container.innerHTML = "<p style='text-align:center;'>No orders yet.</p>";
+  if(!token){
+    container.innerHTML = "Please login to see your orders";
     return;
   }
 
-  // Display latest orders first
-  savedOrders.slice().reverse().forEach(order => {
-    const div = document.createElement("div");
-    div.className = "order-card";
-    div.style.cursor = "pointer";
+  container.innerHTML = "Loading orders...";
 
-    // Build items summary HTML
+  fetch('https://ziyaworld-backend.onrender.com/api/orders/user', {
+    headers: {
+      'Authorization': 'Bearer ' + token   // ⭐ ADD THIS
+    }
+  })
+.then(res => {
+  if(!res.ok){
+    throw new Error("Failed request: " + res.status);
+  }
+  return res.json();
+})
+.then(orders => {
+  console.log("Orders from backend:", orders); // ⭐ DEBUG
+
+    container.innerHTML = "";
+
+    if(!orders.length){
+      container.innerHTML = "No orders yet";
+      return;
+    }
+
+    orders.reverse().forEach(order => {
+
+        let itemsHTML = "";
+
+        order.items.forEach(item => {
+          itemsHTML += `
+            <div style="display:flex; align-items:center; margin-bottom:6px;">
+              <img src="${item.image}" style="width:40px; height:40px; margin-right:10px;">
+              <div>
+                <strong>${item.name}</strong> x${item.quantity}<br>
+                ₦${item.price.toLocaleString()}
+              </div>
+            </div>
+          `;
+        });
+
+        const div = document.createElement("div");
+        div.className = "order-card";
+
+        div.innerHTML = `
+          <p><strong>ID:</strong> ${order._id}</p>
+          <p><strong>Total:</strong> ₦${order.amount.toLocaleString()}</p>
+          <p><strong>Status:</strong> ${order.status}</p>
+<button onclick="openOrderDetails('${order._id}')">View Details</button>
+          <div>${itemsHTML}</div>
+        `;
+
+      container.appendChild(div);
+    });
+
+  })
+  .catch(err => {
+    console.error(err);
+    container.innerHTML = "Failed to load orders";
+  });
+}
+
+
+// Open individual order details (if you still want a separate popup)
+function openOrderDetails(id) {
+
+  const token = localStorage.getItem("token");
+
+  fetch('https://ziyaworld-backend.onrender.com/api/orders/user', {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(res => res.json())
+  .then(orders => {
+
+    const order = orders.find(o => o._id === id);
+
+    if (!order) return alert("Order not found!");
+
+    const container = document.getElementById("fullOrderDetails");
+    container.innerHTML = "";
+
     let itemsHTML = "";
+
     order.items.forEach(item => {
       itemsHTML += `
-        <div style="display:flex; align-items:center; margin-bottom:6px;">
-          <img src="${item.image}" style="width:40px; height:40px; object-fit:cover; margin-right:10px;">
+        <div style="display:flex; align-items:center; margin-bottom:8px;">
+          <img src="${item.image}" style="width:50px; height:50px; margin-right:10px;">
           <div>
             <strong>${item.name}</strong> x${item.quantity}<br>
-            ₦${item.price.toLocaleString()} each | Total: ₦${(item.price * item.quantity).toLocaleString()}
+            ₦${item.price.toLocaleString()}
           </div>
         </div>
       `;
     });
 
-    div.innerHTML = `
-      <p><strong>Order ID:</strong> ${order.id}</p>
-      <p><strong>Date:</strong> ${order.date}</p>
-      <p><strong>Total:</strong> ₦${order.total.toLocaleString()}</p>
-      <p><strong>Status:</strong> ${order.status}</p>
-      <div>${itemsHTML}</div>
+    container.innerHTML = `
+      <p><strong>Name:</strong> ${order.name}</p>
+      <p><strong>Phone:</strong> ${order.phone}</p>
+      <p><strong>Address:</strong> ${order.address}</p>
+      <hr>
+      ${itemsHTML}
+      <hr>
+      <h3>Total: ₦${order.amount.toLocaleString()}</h3>
     `;
 
-    container.appendChild(div);
+    document.getElementById("orderDetailsOverlay").style.display = "flex";
   });
 }
 
-// Open individual order details (if you still want a separate popup)
-function openOrderDetails(id) {
-  const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-  const order = savedOrders.find(o => o.id === id);
-  if (!order) return alert("Order not found!");
-
-  const container = document.getElementById("fullOrderDetails");
-  container.innerHTML = "";
-
-  let itemsHTML = "";
-  order.items.forEach(item => {
-    itemsHTML += `
-      <div style="display:flex; align-items:center; margin-bottom:8px;">
-        <img src="${item.image}" style="width:50px; height:50px; object-fit:cover; margin-right:10px;">
-        <div>
-          <strong>${item.name}</strong> x${item.quantity}<br>
-          ₦${item.price.toLocaleString()} each | Total: ₦${(item.price * item.quantity).toLocaleString()}
-        </div>
-      </div>
-    `;
-  });
-
-  container.innerHTML = `
-    <p><strong>Name:</strong> ${order.customer.name}</p>
-    <p><strong>Phone:</strong> ${order.customer.phone}</p>
-    <p><strong>Address:</strong> ${order.customer.address}</p>
-    <hr>
-    ${itemsHTML}
-    <hr>
-    <h3>Total: ₦${order.total.toLocaleString()}</h3>
-  `;
-
-  document.getElementById("orderDetailsOverlay").style.display = "flex";
-}
 
 function closeOrderDetails() {
   document.getElementById("orderDetailsOverlay").style.display = "none";
@@ -909,11 +962,6 @@ function changeTheme(theme){
     .setProperty("--main-color", colors[theme]);
 }
 
-window.onload = function(){
-  document.getElementById("checkoutOverlay").style.display = "none";
-  closePanels();
-};
-
 function openViewer(name, price, image){
   document.getElementById("viewerImg").src = image;
   document.getElementById("viewerName").innerText = name;
@@ -977,3 +1025,48 @@ backBtn.style.display = 'none';
 backBtn.addEventListener('click', () => {
   backBtn.style.display = 'none';
 });
+
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+
+  toast.innerText = message;
+  toast.className = "toast show " + type;
+
+  setTimeout(() => {
+    toast.className = "toast";
+  }, 3000); // disappears after 3 seconds
+}
+
+function closeAuthPopup(){
+  document.getElementById("authPopup").style.display = "none";
+}
+
+function goToAuth(){
+  window.location.href = "auth.html"; // login/signup page
+}
+
+function checkSession(){
+
+  const loginTime = localStorage.getItem("loginTime");
+
+  if(!loginTime) return;
+
+  const now = Date.now();
+  const diff = now - parseInt(loginTime);
+
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+
+  if(diff > ONE_DAY){
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("loginTime");
+
+    showToast("Session expired. Login again", "error");
+  }
+}
+
+checkSession();
+
+function goToAuth(){
+  window.location.href = "auth.html";
+}

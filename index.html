@@ -26,6 +26,8 @@
   <img id="modalImg">
 </div>
 
+  <div id="toast" class="toast"></div>
+
   <!-- FLOATING TOP BUTTONS -->
 <div class="top-icons">
 
@@ -329,6 +331,31 @@ payButton.addEventListener("click", () => {
 
 </div>
 
+<div id="authPopup" class="auth-popup">
+  <div class="auth-box">
+    <p>You need to login before placing an order</p>
+
+    <button onclick="goToAuth()" class="main-btn">OK</button>
+    <!-- LOGIN / SIGNUP MODAL -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-box">
+    
+    <h2 id="authTitle">Login</h2>
+
+    <input type="text" id="authName" placeholder="Full Name" style="display:none;">
+    <input type="email" id="authEmail" placeholder="Email">
+    <input type="password" id="authPassword" placeholder="Password">
+
+    <div class="auth-buttons">
+      <button id="loginBtn">Login</button>
+      <button id="signupBtn">Sign Up</button>
+    </div>
+
+    <p id="toggleAuth">Don't have an account? Sign up</p>
+
+    <span class="close-auth" onclick="closeAuthModal()">✖</span>
+  </div>
+</div>
 
 <!-- ================= FOOTER ================= -->
 <footer>
@@ -396,6 +423,8 @@ payButton.addEventListener("click", () => {
   </div>
 
 </div>
+
+<button onclick="goToAuth()">Login / Signup</button>
 
 <!-- Tesseract.js -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
