@@ -1,3 +1,12 @@
+/* FULL PAGE CENTER */
+.auth-container{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg, #f5f5f5, #eaeaea);
+}
+
 .auth-popup{
   position:fixed;
   top:0;
@@ -22,6 +31,10 @@
   background:rgba(0,0,0,0.7);
   justify-content:center;
   align-items:center;
+}
+
+.auth-modal.active{
+  display:flex;
 }
 
 .auth-box{
@@ -107,4 +120,11 @@
 
 .toast.show{
   opacity: 1;
+}
+
+/* CHECKBOX LABEL */
+#agreeLabel{
+  font-size:14px;
+  display:block;
+  margin-top:10px;
 }

@@ -5,7 +5,7 @@ if (!token) {
   container.innerHTML = "<p>Please login first</p>";
 } else {
 
-  fetch(`https://ziyaworld-backend.onrender.com/api/orders/user`, {
+  fetch(`https://ziyaworld-backend-r9xm.onrender.com/api/orders/user`, {
     headers: { 'Authorization': `Bearer ${token}` }
   })
   .then(res => res.json())

@@ -8,6 +8,7 @@
   <!-- Main CSS -->
   <link rel="stylesheet" href="style.css">
 
+
   <!-- FontAwesome -->
   <link rel="stylesheet" 
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -43,7 +44,7 @@
 
   <!-- ================= TOPBAR ================= -->
 <div class="menu-icon" onclick="toggleMenu()">
-☰
+  ☰
 </div>
 
   <div id="sideMenu" class="side-menu">
@@ -157,54 +158,41 @@ Proceed Order
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 <script>
-const payButton = document.getElementById("payButton");
+document.addEventListener("DOMContentLoaded", () => {
+  const payButton = document.getElementById("payCardBtn");
 
-payButton.addEventListener("click", () => {
+  if (!payButton) return;
 
-  const amount = 65000; // price in Naira
-  const email = "ziyaworldonline@gmail.com"; // customer email
-  const orderId = "1234567890abcdef"; // your order ID
+  payButton.addEventListener("click", () => {
+    const amount = 55000; // price in Naira
+    const email = "ziyaworldonline@gmail.com"; // customer email
+    const orderId = "1234567890abcdef"; // example order ID
 
-  let handler = PaystackPop.setup({
+    let handler = PaystackPop.setup({
+      key: "pk_test_e42bfdd67356f1f0db6f49574934828cba61c233", // PUBLIC KEY
+      email: email,
+      amount: amount * 100, // in kobo
+      ref: '' + Math.floor(Math.random() * 1000000000 + 1),
+      metadata: { orderId: orderId },
+      callback: function(response) {
+        fetch(`https://ziyaworld-backend-r9xm.onrender.com/api/payment/verify/${response.reference}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              alert("Payment successful! Order confirmed.");
+              window.location.href = "/orders.html";
+            } else {
+              alert("Payment verification failed.");
+            }
+          });
+      },
+      onClose: function() {
+        alert("Payment was cancelled.");
+      }
+    });
 
-    // ✅ PUBLIC KEY ONLY
-    key: "pk_test_e42bfdd67356f1f0db6f49574934828cba61c233",
-
-    email: email,
-
-    // ✅ Paystack uses kobo
-    amount: 55000 * 100,
-
-    ref: '' + Math.floor(Math.random() * 1000000000 + 1),
-
-    metadata: {
-      orderId: orderId
-    },
-
-    callback: function(response) {
-
-      // ✅ Call YOUR backend to verify payment
-      fetch(`https://ziyaworld-backend.onrender.com/api/payment/verify/${response.reference}`)
-        .then(res => res.json())
-        .then(data => {
-
-          if (data.success) {
-            alert("Payment successful! Order confirmed.");
-            window.location.href = "/orders.html";
-          } else {
-            alert("Payment verification failed.");
-          }
-
-        });
-    },
-
-    onClose: function() {
-      alert("Payment was cancelled.");
-    }
-
+    handler.openIframe();
   });
-
-  handler.openIframe();
 });
 </script>
 
@@ -233,60 +221,106 @@ payButton.addEventListener("click", () => {
 
   <div class="close" onclick="closePanels()">✖</div>
 
-  <h2>Account Settings</h2>
+  <h2>Settings</h2>
 
-  <!-- PROFILE FORM -->
-  <div id="profileForm">
 
-    <label>Full Name</label>
-    <input id="profileName" placeholder="Enter your full name">
-
-    <label>Delivery Address</label>
-    <input id="profileAddress" placeholder="Enter your delivery address">
-
-    <button class="main-btn" onclick="saveProfile()">Save Profile</button>
-
+  <!-- PROFILE SECTION -->
+  <div class="settings-item" onclick="openViewProfile()">
+    👤 Profile
   </div>
-
-   <!-- PROFILE DISPLAY -->
-  <div id="profileDisplay" class="profile-display" style="display:none;">
-    <h3>Your Profile</h3>
-
-    <p><strong>Name:</strong> <span id="displayName"></span></p>
-    <p><strong>Address:</strong> <span id="displayAddress"></span></p>
-
-    <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
-  </div>
-
-  <hr>
 
   <!-- THEME -->
-  <h3>Theme Customization</h3>
-
+  <h3>Theme</h3>
   <div class="theme-buttons">
-    <button class="theme-btn black" onclick="changeTheme('black')"></button>
-    <button class="theme-btn red" onclick="changeTheme('red')"></button>
-    <button class="theme-btn blue" onclick="changeTheme('blue')"></button>
-    <button class="theme-btn green" onclick="changeTheme('green')"></button>
-    <button class="theme-btn gold" onclick="changeTheme('gold')"></button>
+    <button class="theme-btn black" onclick="changeTheme('#000')"></button>
+    <button class="theme-btn red" onclick="changeTheme('#8b0000')"></button>
+    <button class="theme-btn blue" onclick="changeTheme('#001f4d')"></button>
+    <button class="theme-btn green" onclick="changeTheme('#003300')"></button>
+    <button class="theme-btn gold" onclick="changeTheme('#b8860b')"></button>
   </div>
 
-  <hr>
+  <!-- SECURITY -->
+  <div class="settings-item" onclick="openSecurity()">
+    🔒 Security
+  </div>
 
   <!-- TERMS -->
-  <h3>Terms & Agreement</h3>
+<div class="settings-item" onclick="openTerms()">
+  📄 Terms & Agreement
+</div>
 
-  <p class="terms">
-    By placing an order on ZiyaWorld, you agree that:
-    • All items are inspected before delivery.<br>
-    • Delivery timelines depend on location.<br>
-    • Orders confirmed cannot be canceled after dispatch.<br>
-    • Refunds are processed within 3–5 business days where applicable.<br>
-    • ZiyaWorld reserves the right to update policies without prior notice.
-  </p>
+<button class="logout-btn" onclick="logoutUser()">
+  Logout
+</button>
+
 
 </div>
 
+<!-- ================= PROFILE VIEW PANEL ================= -->
+<div id="viewProfilePanel" class="overlay-panel" style="display:none;">
+  <span onclick="backToSettings()">✖</span>
+
+  <h2>My Profile</h2>
+
+  <div class="profile-box">
+<img id="profileImage" src="images/default-profile.png" class="profile-img-square">
+
+    <p><strong>Name:</strong> <span id="viewName"></span></p>
+    <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+    <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
+    <p><strong>Address:</strong> <span id="viewAddress"></span></p>
+
+<button class="glass-btn" onclick="openEditProfile()">Edit Profile</button>
+  </div>
+</div>
+
+<!-- ================= EDIT PROFILE PANEL ================= -->
+<div id="editProfilePanel" class="overlay-panel" style="display:none;">
+  <span onclick="backToViewProfile()">✖</span>
+
+  <h2>Edit Profile</h2>
+
+     <!-- Square preview above inputs -->
+  <img id="editProfileImage" src="images/default-profile.png" alt="Profile Picture" class="profile-img-square">
+  <input type="file" id="editProfileUpload" accept="image/*">
+  
+  <input id="editName" placeholder="Full Name">
+  <input id="editEmail" placeholder="Email">
+  <input id="editPhone" placeholder="Phone">
+  <input id="editAddress" placeholder="Address">
+
+<button class="glass-btn" onclick="saveProfile()">Save</button>
+</div>
+
+<!-- ================= TERMS PANEL ================= -->
+<div id="termsPanel" class="overlay-panel" style="display:none;">
+  <span onclick="backToSettings()">✖</span>
+
+  <h2>Terms & Conditions</h2>
+
+  <p>
+    Welcome to ZiyaWorld. By using this platform, you agree to the following terms:
+  </p>
+
+  <ul>
+    <li>All orders must be confirmed before processing.</li>
+    <li>Payments must be completed before shipping.</li>
+    <li>No refunds after delivery unless item is damaged.</li>
+    <li>Delivery times may vary depending on location.</li>
+  </ul>
+</div>
+
+<!-- ================= SECURITY PANEL ================= -->
+<div id="securityPanel" class="overlay-panel" style="display:none;">
+  <span onclick="backToSettings()">✖</span>
+
+  <h2>Change Password</h2>
+
+  <input id="oldPassword" type="password" placeholder="Old Password">
+  <input id="newPassword" type="password" placeholder="New Password">
+
+<button class="glass-btn" onclick="changePassword()">Update Password</button>
+</div>
 
 <!-- ================= CONTACT PANEL ================= -->
 <div class="side-panel" id="contactPanel">
@@ -331,32 +365,6 @@ payButton.addEventListener("click", () => {
 
 </div>
 
-<div id="authPopup" class="auth-popup">
-  <div class="auth-box">
-    <p>You need to login before placing an order</p>
-
-    <button onclick="goToAuth()" class="main-btn">OK</button>
-    <!-- LOGIN / SIGNUP MODAL -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-box">
-    
-    <h2 id="authTitle">Login</h2>
-
-    <input type="text" id="authName" placeholder="Full Name" style="display:none;">
-    <input type="email" id="authEmail" placeholder="Email">
-    <input type="password" id="authPassword" placeholder="Password">
-
-    <div class="auth-buttons">
-      <button id="loginBtn">Login</button>
-      <button id="signupBtn">Sign Up</button>
-    </div>
-
-    <p id="toggleAuth">Don't have an account? Sign up</p>
-
-    <span class="close-auth" onclick="closeAuthModal()">✖</span>
-  </div>
-</div>
-
 <!-- ================= FOOTER ================= -->
 <footer>
 
@@ -391,6 +399,14 @@ payButton.addEventListener("click", () => {
 
 </div>
 
+
+<!-- USER INFO -->
+<div id="userSection" style="display:none;">
+  <span id="username"></span>
+  <button onclick="logoutUser()">Logout</button>
+</div>
+
+
 <!-- CARD PAYMENT MODAL -->
 <div id="cardPaymentModal" class="card-payment-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000;">
 
@@ -422,9 +438,6 @@ payButton.addEventListener("click", () => {
     <h3>Payment Successful ✅</h3>
   </div>
 
-</div>
-
-<button onclick="goToAuth()">Login / Signup</button>
 
 <!-- Tesseract.js -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>

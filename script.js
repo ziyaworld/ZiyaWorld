@@ -356,7 +356,7 @@ function saveOrderToBackend(order){
     paymentMethod: order.paymentMethod
   };
 
-  fetch('https://ziyaworld-backend.onrender.com/api/orders', {
+  fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -373,21 +373,66 @@ function saveOrderToBackend(order){
   });
 }
 
+function updateCheckoutUI(){
+  const token = localStorage.getItem("token");
+  const btn = document.querySelector(".checkout-btn");
+
+  if(!btn) return;
+
+  if(!token){
+    btn.innerText = "Login to Order";
+  } else {
+    btn.innerText = "Proceed Order";
+  }
+}
+
+
 // PLACE ORDER
 let pendingTransferOrder = null;
 
 function checkout() {
 
-  const name = document.getElementById("custName").value.trim();
-  const phone = document.getElementById("custPhone").value.trim();
-  const address = document.getElementById("custAddress").value.trim();
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    showToast("login before placing order");
+     showAuthChoice(); // 🔥 NEW POPUP
+    return; // stop checkout
+  }
+
+const user = JSON.parse(localStorage.getItem("user")) || {};
+const profile = JSON.parse(localStorage.getItem("profile")) || {};
+
+const name = user.name || profile.name || document.getElementById("custName").value.trim();
+const phone = profile.phone || document.getElementById("custPhone").value.trim();
+const address = profile.address || document.getElementById("custAddress").value.trim();
+
   const delivery = parseInt(document.getElementById("deliveryMethod").value || 0);
   const payment = document.getElementById("paymentMethod").value;
 
-  if(!name || !phone || !address){
-    alert("Fill all delivery details!");
+  if (!phone || !address || !name) {
+    alert("Please enter all delivery details");
     return;
   }
+
+  // ✅ SAVE PROFILE (THIS IS WHAT YOU WANTED BACK)
+  localStorage.setItem("profile", JSON.stringify({
+    name,
+    phone,
+    address
+  }));
+
+  if(profile.name){
+  document.getElementById("custName").readOnly = true;
+}
+
+if(profile.phone){
+  document.getElementById("custPhone").readOnly = true;
+}
+
+if(profile.address){
+  document.getElementById("custAddress").readOnly = true;
+}
 
   let subtotal = 0;
   cart.forEach(i => subtotal += i.price * i.quantity);
@@ -405,29 +450,33 @@ function checkout() {
     date: new Date().toLocaleString()
   };
 
-
-  // 1️⃣ Pay on Delivery
-if(payment === "cod") {
-  newOrder.status = "Processing";
-
-  saveOrderToBackend(newOrder); // ✅ SEND TO BACKEND
-
-  finishCheckout();
-  alert("Order placed! Status: Processing");
-  renderOrders(); // ⭐ ADD THIS
+  if (!token) {
+  localStorage.setItem("redirectAfterLogin", "checkout"); // ⭐ ADD
+  showAuthChoice();
   return;
 }
 
-  // 2️⃣ Bank Transfer
-if(payment === "transfer") {
-  newOrder.status = "Pending Confirmation";
+  // ✅ COD
+  if (payment === "cod") {
+    newOrder.status = "Processing";
 
-  pendingTransferOrder = newOrder;
+    saveOrderToBackend(newOrder);
+    finishCheckout();
 
-  openTransferModal(newOrder.total);
-  document.getElementById("checkoutOverlay").style.display = "none";
-  return;
-}
+    alert("Order placed! Pay on delivery.");
+    renderOrders();
+    return;
+  }
+
+  // ✅ TRANSFER
+  if (payment === "transfer") {
+    newOrder.status = "Pending Confirmation";
+    pendingTransferOrder = newOrder;
+
+    openTransferModal(newOrder.total);
+    document.getElementById("checkoutOverlay").style.display = "none";
+    return;
+  }
 
   // 3️⃣ Card Payment
   if(payment === "card") {
@@ -445,7 +494,7 @@ if(payment === "transfer") {
       currency: "NGN",
       callback: function(response) {
         // call your backend to verify payment
-        fetch("https://ziyaworld-backend.onrender.com/api/payment/verify/" + response.reference)
+        fetch("https://ziyaworld-backend-r9xm.onrender.com/api/payment/verify/" + response.reference)
           .then(res => res.json())
           .then(data => {
 if(data.success){
@@ -470,7 +519,9 @@ if(data.success){
     handler.openIframe();
     return;
   }
-}
+
+} // ✅ CLOSE checkout() FUNCTION HERE
+
 
 // ================= FINISH CHECKOUT =================
 function finishCheckout() {
@@ -635,6 +686,13 @@ function openCheckout() {
     return;
   }
 
+  const profile = JSON.parse(localStorage.getItem("profile")) || {};
+
+  // ✅ AUTO FILL
+  document.getElementById("custName").value = profile.name || "";
+  document.getElementById("custPhone").value = profile.phone || "";
+  document.getElementById("custAddress").value = profile.address || "";
+
   // ⭐ CLOSE CART PANEL
   const cartPanel = document.getElementById("cartPanel");
   if(cartPanel) cartPanel.classList.remove("active");
@@ -663,70 +721,103 @@ function openOrders() {
 }
 
 // Render all orders
-function renderOrders(){
-
+function renderOrders() {
   const token = localStorage.getItem("token");
   const container = document.getElementById("ordersList");
 
-  if(!token){
-    container.innerHTML = "Please login to see your orders";
-    return;
-  }
+  if (!container) return console.error("Orders container not found");
+
+if (!token) {
+  container.innerHTML = `
+    <p> login to see your orders</p>
+  `;
+  return;
+}
 
   container.innerHTML = "Loading orders...";
 
-  fetch('https://ziyaworld-backend.onrender.com/api/orders/user', {
-    headers: {
-      'Authorization': 'Bearer ' + token   // ⭐ ADD THIS
-    }
+  fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders/user', {
+    headers: { 'Authorization': 'Bearer ' + token }
   })
-.then(res => {
-  if(!res.ok){
-    throw new Error("Failed request: " + res.status);
+  .then(res => {
+    if (!res.ok) throw new Error("Failed request: " + res.status);
+    return res.json();
+  })
+.then(data => {
+  const orders = data.orders || data;
+  container.innerHTML = "";
+
+  if (!orders.length) {
+    container.innerHTML = "No orders yet";
+    return;
   }
-  return res.json();
+
+  orders.reverse().forEach(order => {
+
+let itemsHTML = "";
+
+(order.items || []).forEach(item => {
+  const itemTotal = item.price * item.quantity;
+
+  itemsHTML += `
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+      border:1px solid #ddd;
+      padding:10px;
+      border-radius:10px;
+      background:#fff;
+    ">
+      <img src="${item.image}" style="
+        width:60px;
+        height:60px;
+        object-fit:cover;
+        border-radius:8px;
+      ">
+
+      <div style="flex:1;">
+        <strong>${item.name}</strong><br>
+        ₦${item.price.toLocaleString()} each<br>
+        <small>Total: ₦${itemTotal.toLocaleString()}</small>
+      </div>
+
+      <div style="
+        font-weight:bold;
+        background:#000;
+        color:#fff;
+        padding:5px 10px;
+        border-radius:6px;
+      ">
+        x${item.quantity}
+      </div>
+    </div>
+  `;
+});
+
+    const div = document.createElement("div");
+    div.className = "order-card";
+
+div.innerHTML = `
+  <p><strong>Order ID:</strong> ${order._id || order.id}</p>
+  <p><strong>Status:</strong> 
+    <span style="color:${
+      order.status === "Completed" ? "green" :
+      order.status === "Processing" ? "orange" :
+      "red"
+    }">
+      ${order.status || "Unknown"}
+    </span>
+  </p>
+  <p><strong>Total:</strong> ₦${(order.amount || order.total).toLocaleString()}</p>
+
+  <div style="margin-top:10px;">${itemsHTML}</div>
+`;
+
+    container.appendChild(div);
+  });
 })
-.then(orders => {
-  console.log("Orders from backend:", orders); // ⭐ DEBUG
-
-    container.innerHTML = "";
-
-    if(!orders.length){
-      container.innerHTML = "No orders yet";
-      return;
-    }
-
-    orders.reverse().forEach(order => {
-
-        let itemsHTML = "";
-
-        order.items.forEach(item => {
-          itemsHTML += `
-            <div style="display:flex; align-items:center; margin-bottom:6px;">
-              <img src="${item.image}" style="width:40px; height:40px; margin-right:10px;">
-              <div>
-                <strong>${item.name}</strong> x${item.quantity}<br>
-                ₦${item.price.toLocaleString()}
-              </div>
-            </div>
-          `;
-        });
-
-        const div = document.createElement("div");
-        div.className = "order-card";
-
-        div.innerHTML = `
-          <p><strong>ID:</strong> ${order._id}</p>
-          <p><strong>Total:</strong> ₦${order.amount.toLocaleString()}</p>
-          <p><strong>Status:</strong> ${order.status}</p>
-<button onclick="openOrderDetails('${order._id}')">View Details</button>
-          <div>${itemsHTML}</div>
-        `;
-
-      container.appendChild(div);
-    });
-
-  })
   .catch(err => {
     console.error(err);
     container.innerHTML = "Failed to load orders";
@@ -736,128 +827,236 @@ function renderOrders(){
 
 // Open individual order details (if you still want a separate popup)
 function openOrderDetails(id) {
-
   const token = localStorage.getItem("token");
+  if (!token) return alert("Please login to view orders.");
 
-  fetch('https://ziyaworld-backend.onrender.com/api/orders/user', {
-    headers: {
-      'Authorization': 'Bearer ' + token
-    }
+  fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders/user', {
+    headers: { 'Authorization': 'Bearer ' + token }
   })
   .then(res => res.json())
-  .then(orders => {
-
-    const order = orders.find(o => o._id === id);
+  .then(data => {
+    const orders = data.orders || data; // fallback if backend returns array directly
+    const order = orders.find(o => (o._id || o.id) === id);
 
     if (!order) return alert("Order not found!");
 
     const container = document.getElementById("fullOrderDetails");
+    if (!container) return;
+
     container.innerHTML = "";
 
-    let itemsHTML = "";
+let itemsHTML = "";
 
-    order.items.forEach(item => {
-      itemsHTML += `
-        <div style="display:flex; align-items:center; margin-bottom:8px;">
-          <img src="${item.image}" style="width:50px; height:50px; margin-right:10px;">
-          <div>
-            <strong>${item.name}</strong> x${item.quantity}<br>
-            ₦${item.price.toLocaleString()}
-          </div>
-        </div>
-      `;
-    });
+(order.items || []).forEach(item => {
+  const itemTotal = item.price * item.quantity;
+
+  itemsHTML += `
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+      border:1px solid #ddd;
+      padding:10px;
+      border-radius:10px;
+      background:#fff;
+    ">
+      <img src="${item.image}" style="
+        width:60px;
+        height:60px;
+        object-fit:cover;
+        border-radius:8px;
+      ">
+
+      <div style="flex:1;">
+        <strong>${item.name}</strong><br>
+        ₦${item.price.toLocaleString()} each<br>
+        <small>Total: ₦${itemTotal.toLocaleString()}</small>
+      </div>
+
+      <div style="
+        font-weight:bold;
+        background:#000;
+        color:#fff;
+        padding:5px 10px;
+        border-radius:6px;
+      ">
+        x${item.quantity}
+      </div>
+    </div>
+  `;
+});
 
     container.innerHTML = `
-      <p><strong>Name:</strong> ${order.name}</p>
-      <p><strong>Phone:</strong> ${order.phone}</p>
-      <p><strong>Address:</strong> ${order.address}</p>
+      <p><strong>Name:</strong> ${order.customer?.name || order.name || "N/A"}</p>
+      <p><strong>Phone:</strong> ${order.customer?.phone || order.phone || "N/A"}</p>
+      <p><strong>Address:</strong> ${order.customer?.address || order.address || "N/A"}</p>
       <hr>
       ${itemsHTML}
       <hr>
-      <h3>Total: ₦${order.amount.toLocaleString()}</h3>
+      <h3>Total: ₦${(order.amount || order.total).toLocaleString()}</h3>
+      <p><strong>Status:</strong> ${order.status || "Unknown"}</p>
     `;
 
     document.getElementById("orderDetailsOverlay").style.display = "flex";
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Failed to load order details");
   });
-}
-
-
-function closeOrderDetails() {
-  document.getElementById("orderDetailsOverlay").style.display = "none";
 }
 
 // ================================
 // PROFESSIONAL PROFILE SETTINGS
 // ================================
 
-function openSettings(){
-  closeMenu(); // 
-  closePanels();
+function openSettings() {
   document.getElementById("settingsPanel").classList.add("active");
-  loadProfile();
 }
 
-function closeSettings(){
-  document.getElementById("settingsPanel").classList.remove("active");
+function closePanels() {
+  document.querySelectorAll(".side-panel").forEach(panel => {
+    panel.classList.remove("active");
+  });
 }
 
+// ================= PROFILE SYSTEM CLEAN =================
+
+function openViewProfile() {
+  document.getElementById("settingsPanel").style.display = "none";
+  document.getElementById("viewProfilePanel").style.display = "block";
+}
+
+function openEditProfile() {
+  document.getElementById("viewProfilePanel").style.display = "none";
+  document.getElementById("editProfilePanel").style.display = "block";
+}
+
+function openSecurity() {
+  document.getElementById("settingsPanel").style.display = "none";
+  document.getElementById("securityPanel").style.display = "block";
+}
+
+function backToSettings() {
+  document.getElementById("settingsPanel").style.display = "block";
+  document.getElementById("viewProfilePanel").style.display = "none";
+  document.getElementById("securityPanel").style.display = "none";
+}
+
+function backToViewProfile() {
+  document.getElementById("editProfilePanel").style.display = "none";
+  document.getElementById("viewProfilePanel").style.display = "block";
+}
+
+// LOAD PROFILE
+function loadProfile(){
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const profile = JSON.parse(localStorage.getItem("profile")) || {};
+
+  document.getElementById("viewName").innerText = profile.name || user.name || "User";
+  document.getElementById("viewEmail").innerText = user.email || "";
+  document.getElementById("viewPhone").innerText = profile.phone || "Not set";
+  document.getElementById("viewAddress").innerText = profile.address || "Not set";
+}
+
+// LOAD EDIT PROFILE
+function loadEditProfile(){
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const profile = JSON.parse(localStorage.getItem("profile")) || {};
+
+  document.getElementById("editName").value = profile.name || user.name || "";
+  document.getElementById("editEmail").value = user.email || "";
+  document.getElementById("editPhone").value = profile.phone || "";
+  document.getElementById("editAddress").value = profile.address || "";
+}
+
+// SAVE PROFILE
 function saveProfile(){
 
-  const fullName = document.getElementById("profileName").value.trim();
-  const email = document.getElementById("profileEmail").value.trim();
-  const phone = document.getElementById("profilePhone").value.trim();
-  const address = document.getElementById("profileAddress").value.trim();
+  const name = document.getElementById("editName").value.trim();
+  const email = document.getElementById("editEmail").value.trim();
+  const phone = document.getElementById("editPhone").value.trim();
+  const address = document.getElementById("editAddress").value.trim();
 
-  if(!fullName || !email){
-    alert("Full name and email are required.");
+  if(!name || !email || !phone || !address){
+    alert("Fill all fields");
     return;
   }
 
-  const profile = {
-    fullName,
+  localStorage.setItem("profile", JSON.stringify({
+    name,
     email,
     phone,
-    address,
-    savedAt: new Date().toLocaleString()
+    address
+  }));
+
+  alert("Profile updated!");
+
+  loadProfile();
+
+  // AUTO RETURN
+  backToViewProfile();
+}
+
+// CHANGE PASSWORD (basic)
+function changePassword(){
+
+  const oldPass = document.getElementById("oldPassword").value;
+  const newPass = document.getElementById("newPassword").value;
+
+  if(!oldPass || !newPass){
+    alert("Fill all fields");
+    return;
+  }
+
+  alert("Password updated successfully");
+
+  backToSettings();
+}
+
+function openTerms() {
+  document.getElementById("settingsPanel").style.display = "none";
+  document.getElementById("termsPanel").style.display = "block";
+}
+
+function logoutUser(){
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("loginTime");
+
+  showPopup("Logged out");
+
+  // Redirect to your homepage
+  window.location.href = "index.html"; // ✅ goes to main site
+}
+
+// Assuming you have a file input for the user to upload their profile
+// Get elements
+const editProfileImage = document.getElementById("editProfileImage");
+const profileImage = document.getElementById("profileImage");
+const editProfileUpload = document.getElementById("editProfileUpload");
+
+// Show preview when user selects a file
+editProfileUpload.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    editProfileImage.src = reader.result;  // Update edit preview
+    profileImage.src = reader.result;      // Update view profile image immediately
   };
-
-  localStorage.setItem("profile", JSON.stringify(profile));
-
-  alert("Profile saved successfully.");
-}
+  reader.readAsDataURL(file);
+});
 
 
-function loadProfile(){
-
-  const profile = JSON.parse(localStorage.getItem("profile"));
-
-  if(!profile) return;
-
-  const nameInput = document.getElementById("profileName");
-  const emailInput = document.getElementById("profileEmail");
-  const phoneInput = document.getElementById("profilePhone");
-  const addressInput = document.getElementById("profileAddress");
-
-  if(nameInput) nameInput.value = profile.fullName || "";
-  if(emailInput) emailInput.value = profile.email || "";
-  if(phoneInput) phoneInput.value = profile.phone || "";
-  if(addressInput) addressInput.value = profile.address || "";
-}
 // ================= CONTACT =================
 
 function openContact(){
   closeMenu(); // 
   closePanels();
   document.getElementById("contactPanel").classList.add("active");
-}
-
-// ================= CLOSE PANELS =================
-
-function closePanels(){
-  document.querySelectorAll(".side-panel").forEach(panel=>{
-    panel.classList.remove("active");
-  });
 }
 
 // ================= HOME =================
@@ -907,35 +1106,11 @@ function loadCheckoutSummary() {
 
 // ================= SAVE & LOAD PROFILE =================
 
-function saveProfile() {
-  const name = document.getElementById("profileName").value.trim();
-  const address = document.getElementById("profileAddress").value.trim();
-
-  if (!name || !address) {
-    alert("Please fill in your name and address.");
-    return;
-  }
-
-  const profile = {
-    name: name,
-    address: address
-  };
-
-  // Save to browser storage
-  localStorage.setItem("profile", JSON.stringify(profile));
-
-  alert("Profile saved successfully!");
-}
-
 
 // Load profile automatically when page loads
 window.addEventListener("load", function () {
   const savedProfile = JSON.parse(localStorage.getItem("profile"));
 
-  if (savedProfile) {
-    document.getElementById("profileName").value = savedProfile.name;
-    document.getElementById("profileAddress").value = savedProfile.address;
-  }
 });
 
 function cancelCheckout(){
@@ -947,19 +1122,15 @@ function cancelCheckout(){
   document.getElementById("cartPanel").classList.add("active");
 }
 
-function changeTheme(theme){
+function changeTheme(color){
+  document.documentElement.style.setProperty("--main-color", color);
+  localStorage.setItem("siteColor", color);
+}
 
-  const colors = {
-    black: "#000",
-    red: "#8b0000",
-    blue: "#001f4d",
-    green: "#003300",
-    gold: "#b8860b"
-  };
+const savedColor = localStorage.getItem("siteColor");
 
-  document.documentElement
-    .style
-    .setProperty("--main-color", colors[theme]);
+if(savedColor){
+  document.documentElement.style.setProperty("--main-color", savedColor);
 }
 
 function openViewer(name, price, image){
@@ -994,20 +1165,6 @@ menu.classList.toggle("active")
 
 }
 
-function changeColor(color){
-
-document.documentElement.style.setProperty("--main-color", color);
-
-localStorage.setItem("siteColor", color);
-
-}
-
-const savedColor = localStorage.getItem("siteColor");
-
-if(savedColor){
-document.documentElement.style.setProperty("--mainColor", savedColor);
-}
-
 function closeMenu(){
   const menu = document.getElementById("sideMenu");
   if(menu) menu.classList.remove("active");
@@ -1015,16 +1172,13 @@ function closeMenu(){
 
 const backBtn = document.getElementById('backBtn');
 
-// Show the button
-backBtn.style.display = 'block';
-
-// Hide the button
-backBtn.style.display = 'none';
-
-// Or toggle
-backBtn.addEventListener('click', () => {
+if (backBtn) {
   backBtn.style.display = 'none';
-});
+
+  backBtn.addEventListener('click', () => {
+    backBtn.style.display = 'none';
+  });
+}
 
 function showToast(message, type = "success") {
   const toast = document.getElementById("toast");
@@ -1046,7 +1200,6 @@ function goToAuth(){
 }
 
 function checkSession(){
-
   const loginTime = localStorage.getItem("loginTime");
 
   if(!loginTime) return;
@@ -1065,8 +1218,59 @@ function checkSession(){
   }
 }
 
-checkSession();
+function showAuthChoice(){
 
-function goToAuth(){
+  const box = document.createElement("div");
+
+  box.innerHTML = `
+    <div id="authChoiceBox">
+      <p>You need an account to place order</p>
+
+      <button onclick="goToLogin()">Login</button>
+      <button onclick="goToSignup()">Sign Up</button>
+      <button onclick="this.parentElement.parentElement.remove()">Cancel</button>
+    </div>
+  `;
+
+  document.body.appendChild(box);
+}
+
+function handleLoginChoice(){
+  document.getElementById("authChoiceBox").parentElement.remove();
+window.location.href = "auth.html";
+}
+
+function handleSignupChoice(){
+  document.getElementById("authChoiceBox").parentElement.remove();
+window.location.href = "auth.html";
+
+  setTimeout(() => {
+    const title = document.getElementById("authTitle");
+    if(title.innerText === "Login"){
+      toggleAuth();
+    }
+  }, 100);
+}
+
+function goToLogin(){
   window.location.href = "auth.html";
 }
+
+function goToSignup(){
+  window.location.href = "auth.html?mode=signup";
+}
+
+window.addEventListener("load", () => {
+
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("openCheckout") === "true") {
+
+    // small delay so UI finishes loading
+    setTimeout(() => {
+      openCheckout(); // 🔥 this must already exist in your main JS
+    }, 500);
+
+  }
+
+});

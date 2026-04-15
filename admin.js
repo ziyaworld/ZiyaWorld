@@ -1,40 +1,30 @@
 // ================= CONFIG =================
-const API_BASE = "https://ziyaworld-backend.onrender.com/api";
+const API_BASE = "https://ziyaworld-backend-r9xm.onrender.com/api";
 
 // ================= ON PAGE LOAD =================
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Admin page loaded");
 
   const loginBtn = document.getElementById("adminLoginBtn");
+  if (!loginBtn) return console.error("Login button not found!");
 
-  if (!loginBtn) {
-    console.error("Login button not found!");
-    return;
-  }
-
-  // Single listener
   loginBtn.addEventListener("click", loginAdmin);
 
   // AUTO LOGIN
   const token = localStorage.getItem("token");
   if (token) {
-    console.log("Token found, auto logging in...");
-    showDashboard();
-    fetchAdminOrders();
+    console.log("Token found, attempting auto-login...");
+    validateToken(token);
   }
 });
 
 // ================= LOGIN =================
 async function loginAdmin(e) {
-  e?.preventDefault(); // stop form from submitting if inside <form>
+  e?.preventDefault();
 
   const loginBtn = document.getElementById("adminLoginBtn");
-
-  // Disable button to prevent multiple clicks
   loginBtn.disabled = true;
   loginBtn.innerText = "Logging in...";
-
-  console.log("✅ Login button clicked");
 
   const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value.trim();
@@ -47,45 +37,85 @@ async function loginAdmin(e) {
   }
 
   try {
-    console.log("🚀 Sending request...");
+    console.log("Sending login request...");
 
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await fetch(`${API_BASE}/auth/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
-    console.log("📦 Data:", data);
+    const text = await res.text();
 
-    if (!res.ok) {
-      alert(data.message || "Login failed ❌");
-      loginBtn.disabled = false;
-      loginBtn.innerText = "Login";
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      console.error("Not JSON:", text);
+      alert("Server error (wrong route)");
       return;
     }
 
-    // ✅ STORE TOKEN
-    localStorage.setItem("token", data.token);
+    console.log("Response:", data);
 
-    // ✅ SHOW DASHBOARD
+    if (!res.ok || !data.success) {
+      alert(data.msg || data.message || "Login failed ❌");
+      return;
+    }
+
+if (data.user.role !== "admin") {
+  alert("You are not an admin");
+  return;
+}
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
     showDashboard();
     fetchAdminOrders();
 
   } catch (err) {
-    console.error("❌ ERROR:", err);
+    console.error(err);
     alert("Login error, check console");
   } finally {
-    // Re-enable button no matter what
     loginBtn.disabled = false;
     loginBtn.innerText = "Login";
   }
 }
 
+// ================= TOKEN VALIDATION =================
+async function validateToken(token) {
+  try {
+    const res = await fetch(`${API_BASE}/auth/validate-token`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      console.log("Token invalid or expired, logging out...");
+      return logout();
+    }
+
+    // if (token) {
+//   validateToken(token);
+// }
+
+    console.log("Token valid ✅");
+    showDashboard();
+    fetchAdminOrders();
+
+  } catch (err) {
+    console.error("Token validation error:", err);
+    logout();
+  }
+}
+
 // ================= SHOW DASHBOARD =================
 function showDashboard() {
-  document.getElementById("adminLoginModal").style.display = "none";
-  document.getElementById("adminDashboard").style.display = "block";
+  const loginModal = document.getElementById("adminLoginModal");
+  const dashboard = document.getElementById("adminDashboard");
+
+  if (loginModal) loginModal.style.display = "none";
+  if (dashboard) dashboard.style.display = "block";
 }
 
 // ================= FETCH ORDERS =================
@@ -98,23 +128,35 @@ async function fetchAdminOrders() {
       headers: { "Authorization": `Bearer ${token}` }
     });
 
-    const data = await res.json();
-    console.log("Orders data:", data);
+let data = [];
+try {
+  data = await res.json();
+} catch (err) {
+  data = [];
+}
 
     const tbody = document.querySelector("#ordersTable tbody");
     tbody.innerHTML = "";
 
-    if (!res.ok || data.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='5'>No orders found</td></tr>";
+    if (!res.ok) {
+      tbody.innerHTML = `<tr><td colspan="5">Error: ${data.msg || 'Failed to fetch orders'}</td></tr>`;
+      if (res.status === 401) logout(); 
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5">No orders found</td></tr>`;
       return;
     }
 
     data.forEach(order => {
       const tr = document.createElement("tr");
+      const email = order.email || order.userId || "N/A";
+
       tr.innerHTML = `
         <td>${order._id}</td>
-        <td>${order.email || order.userId || "N/A"}</td>
-        <td>₦${order.amount}</td>
+        <td>${email}</td>
+        <td>₦${Number(order.amount).toLocaleString()}</td>
         <td>${order.status}</td>
         <td>
           <button onclick="updateStatus('${order._id}','Shipped')">Shipped</button>
@@ -133,6 +175,9 @@ async function fetchAdminOrders() {
 // ================= UPDATE ORDER STATUS =================
 async function updateStatus(orderId, status) {
   const token = localStorage.getItem("token");
+  const buttons = document.querySelectorAll("#ordersTable button");
+  buttons.forEach(btn => btn.disabled = true);
+
   try {
     const res = await fetch(`${API_BASE}/orders/${orderId}`, {
       method: "PUT",
@@ -144,20 +189,26 @@ async function updateStatus(orderId, status) {
     });
 
     const data = await res.json();
-    console.log("Update response:", data);
-
-    if (!res.ok) return alert(data.msg || "Failed to update status");
+    if (!res.ok || !data.success) return alert(data.msg || "Failed to update status");
 
     fetchAdminOrders();
+
   } catch (err) {
     console.error(err);
     alert("Error updating order");
+  } finally {
+    buttons.forEach(btn => btn.disabled = false);
   }
 }
 
 // ================= LOGOUT =================
 function logout() {
   localStorage.removeItem("token");
-  document.getElementById("adminDashboard").style.display = "none";
-  document.getElementById("adminLoginModal").style.display = "flex";
+  localStorage.removeItem("user");
+
+  const dashboard = document.getElementById("adminDashboard");
+  if (dashboard) dashboard.style.display = "none";
+
+  const loginModal = document.getElementById("adminLoginModal");
+  if (loginModal) loginModal.style.display = "flex";
 }

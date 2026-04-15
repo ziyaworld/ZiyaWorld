@@ -1,37 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login - ZiyaWorld</title>
+  <title>Auth</title>
   <link rel="stylesheet" href="auth.css">
 </head>
-
 <body>
 
-  <div id="toast" class="toast"></div>
-
-<div class="auth-modal" style="display:flex;">
+<div class="auth-container">
 
   <div class="auth-box">
 
     <h2 id="authTitle">Login</h2>
 
-<input type="text" id="authName" placeholder="Full Name" style="display:none;">
-<input type="email" id="authEmail" placeholder="Email">
-<input type="password" id="authPassword" placeholder="Password">
-<input type="phone" id="auth" placeholder="Password">
+    <input type="text" id="authName" placeholder="Full Name" style="display:none;">
+    <input type="email" id="authEmail" placeholder="Email">
+    <input type="password" id="authPassword" placeholder="Password">
 
-    <div class="auth-buttons">
-<button id="signupBtn" onclick="signup()">Sign Up</button>
-<button id="loginBtn" onclick="login()">Login</button>
-    </div>
+    <label id="agreeLabel" style="display:none;">
+      <input type="checkbox" id="agreeTerms">
+      I agree to Terms & Conditions
+    </label>
 
-<p id="toggleAuth" onclick="toggleAuth()">
-  Don't have an account? Sign up
-  </p>
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button id="signupBtn" onclick="signup()" style="display:none;">Sign Up</button>
+
+    <p id="toggleAuth" onclick="toggleAuth()">
+      Don't have an account? Sign up
+    </p>
+
+    <p onclick="goBack()" style="cursor:pointer;">Close</p>
+
   </div>
 
 </div>
 
+<script src="auth.js" defer></script>
 </body>
-<script src="auth.js"></script>
 </html>
