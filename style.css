@@ -70,7 +70,7 @@ body {
 /* ================= LUXURY HOME ================= */
 
 .hero{
-  height:calc(97vh - 70px);
+  height: auto;       /* allow natural fit */
   display:flex;
   flex-direction:column;
   align-items: center; /* centers horizontally */
@@ -78,8 +78,8 @@ body {
   text-align: center;
   position:relative;
   overflow:hidden;
-    min-height: 100vh;
-  padding: 40px 15px;
+ min-height: 80vh;   /* reduce scroll */
+   padding: 60px 15px;
   
 
   background:
@@ -1539,7 +1539,8 @@ color:rgb(180, 160, 15);
 }
 
 #authChoiceBox button:nth-child(4){
-  background: #131e1b;
+  background: #104c3c;
+   color: white
 }
 
 
@@ -2135,7 +2136,11 @@ body.dark-mode .order-top p{
 
 .price{
   font-weight:bold;
-  color:#e6e2e2;
+  color:#100707;
+}
+
+body.dark-mode .price{
+  color:#f1eeee;
 }
 
 
