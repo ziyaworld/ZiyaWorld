@@ -1,45 +1,45 @@
 // ================= PRODUCTS =================
 
 const shoes = [
-{ name:"Ankle Platform Boots", price:65000, image:"images/shoes/ankle-platform-boots.jpg"},
-{ name:"Attico Devon Sandals", price:60000, image:"images/shoes/attico-devon-sandals.jpg"},
-{ name:"Avo Chunky Slippers", price:45000, image:"images/shoes/avo-chunky-slippers.jpg"},
-{ name:"Black Platform Wedges", price:70000, image:"images/shoes/black-platform-wedges.jpg"},
-{ name:"Black Slingback Stiletto", price:68000, image:"images/shoes/black-slingback-stiletto.jpg"},
-{ name:"Black Sock Boots", price:72000, image:"images/shoes/black-sock-boots.jpg"},
-{ name:"Brown Mary Platform", price:64000, image:"images/shoes/brown-mary-platform.jpg"},
-{ name:"Burgundy Slingback Heels", price:66000, image:"images/shoes/burgundy-slingback-heels.jpg"},
-{ name:"Chanel Slingback Heels", price:90000, image:"images/shoes/chanel-slingback-heels.jpg"},
-{ name:"Chunky Loafers", price:50000, image:"images/shoes/chunky-loafers.jpg"},
-{ name:"Decollete Slingback Fiorato", price:75000, image:"images/shoes/decollete-slingback-fiorato.jpg"},
-{ name:"Humble Heels", price:42000, image:"images/shoes/humble-heels.jpg"},
-{ name:"Manolo Blahnik Sandals", price:120000, image:"images/shoes/manolo-blahnik-sandals.jpg"},
-{ name:"Marley Slingback Pumps", price:67000, image:"images/shoes/marley-slingback-pumps.jpg"},
-{ name:"Melissa Thong Wedge", price:53000, image:"images/shoes/melissa-thong-wedge.jpg"},
-{ name:"New Balance 725", price:85000, image:"images/shoes/new-balance-725.jpg"},
-{ name:"Peony Pearl Heels", price:73000, image:"images/shoes/peony-pearl-heels.jpg"},
-{ name:"Square Toe Slingback Flats", price:48000, image:"images/shoes/square-toe-slingback-flats.jpg"}
+{ name:"Ankle Platform Boots", price:35000, image:"images/shoes/ankle-platform-boots.jpg"},
+{ name:"Attico Devon Sandals", price:20000, image:"images/shoes/attico-devon-sandals.jpg"},
+{ name:"Avo Chunky Slippers", price:12000, image:"images/shoes/avo-chunky-slippers.jpg"},
+{ name:"Black Platform Wedges", price:27000, image:"images/shoes/black-platform-wedges.jpg"},
+{ name:"Black Slingback Stiletto", price:28000, image:"images/shoes/black-slingback-stiletto.jpg"},
+{ name:"Black Sock Boots", price:35000, image:"images/shoes/black-sock-boots.jpg"},
+{ name:"Brown Mary Platform", price:22000, image:"images/shoes/brown-mary-platform.jpg"},
+{ name:"Burgundy Slingback Heels", price:26000, image:"images/shoes/burgundy-slingback-heels.jpg"},
+{ name:"Chanel Slingback Heels", price:24000, image:"images/shoes/chanel-slingback-heels.jpg"},
+{ name:"Chunky Loafers", price:18000, image:"images/shoes/chunky-loafers.jpg"},
+{ name:"Decollete Slingback Fiorato", price:33000, image:"images/shoes/decollete-slingback-fiorato.jpg"},
+{ name:"Humble Heels", price:30000, image:"images/shoes/humble-heels.jpg"},
+{ name:"Manolo Blahnik Sandals", price:35000, image:"images/shoes/manolo-blahnik-sandals.jpg"},
+{ name:"Marley Slingback Pumps", price:25000, image:"images/shoes/marley-slingback-pumps.jpg"},
+{ name:"Melissa Thong Wedge", price:26000, image:"images/shoes/melissa-thong-wedge.jpg"},
+{ name:"New Balance 725", price:60000, image:"images/shoes/new-balance-725.jpg"},
+{ name:"Peony Pearl Heels", price:27000, image:"images/shoes/peony-pearl-heels.jpg"},
+{ name:"Square Toe Slingback Flats", price:22000, image:"images/shoes/square-toe-slingback-flats.jpg"}
 ];
 
 const clothes = [
-{ name:"Adunni Dress", price:55000, image:"images/clothes/adunni-dress.jpg"},
-{ name:"Ankara Balloon Skirt", price:40000, image:"images/clothes/ankara-balloon-skirt.jpg"},
-{ name:"Asymmetric Neckline Dress", price:60000, image:"images/clothes/asymmetric-neckline-dress.jpg"},
-{ name:"Aya Dress", price:50000, image:"images/clothes/aya-dress.jpg"},
-{ name:"Boho Vintage", price:45000, image:"images/clothes/boho-vintage.jpg"},
-{ name:"Boubou", price:70000, image:"images/clothes/boubou.jpg"},
-{ name:"Boubou Inspired Ensemble", price:75000, image:"images/clothes/boubou-inspired-ensemble.jpg"},
-{ name:"Cascade Dress", price:58000, image:"images/clothes/cascade-dress.jpg"},
-{ name:"Houndstooth Patterned Jacket", price:62000, image:"images/clothes/houndstooth-patterned-jacket.jpg"},
-{ name:"Keyina Kouture", price:85000, image:"images/clothes/keyina-kouture.jpg"},
-{ name:"Lantern Sleeve Co-ord", price:65000, image:"images/clothes/lantern-sleeve-wide-leg-co-ord.jpg"},
-{ name:"Maxi Length Kaftan", price:68000, image:"images/clothes/maxi-length-kaftan.jpg"},
-{ name:"Mynali", price:47000, image:"images/clothes/mynali.jpg"},
-{ name:"Navy Blue Satin Jumpsuit", price:72000, image:"images/clothes/navy-blue-satin-jumpsuit.jpg"},
-{ name:"Red Formal Gown", price:95000, image:"images/clothes/red-formal-gown.jpg"},
-{ name:"Seige and Brown Gown", price:88000, image:"images/clothes/seige-and-brown-gown.jpg"},
-{ name:"Shaina Set 2.0", price:54000, image:"images/clothes/shaina-set-2-0.jpg"},
-{ name:"Tandoori Maxi Dress", price:76000, image:"images/clothes/tandoori-maxi-dress.jpg"}
+{ name:"Adunni Dress", price:20000, image:"images/clothes/adunni-dress.jpg"},
+{ name:"Ankara Balloon Skirt", price:24000, image:"images/clothes/ankara-balloon-skirt.jpg"},
+{ name:"Asymmetric Neckline Dress", price:30000, image:"images/clothes/asymmetric-neckline-dress.jpg"},
+{ name:"Aya Dress", price:34000, image:"images/clothes/aya-dress.jpg"},
+{ name:"Boho Vintage", price:24000, image:"images/clothes/boho-vintage.jpg"},
+{ name:"Boubou", price:33000, image:"images/clothes/boubou.jpg"},
+{ name:"Boubou Inspired Ensemble", price:45000, image:"images/clothes/boubou-inspired-ensemble.jpg"},
+{ name:"Cascade Dress", price:30000, image:"images/clothes/cascade-dress.jpg"},
+{ name:"Houndstooth Patterned Jacket", price:23000, image:"images/clothes/houndstooth-patterned-jacket.jpg"},
+{ name:"Keyina Kouture", price:38000, image:"images/clothes/keyina-kouture.jpg"},
+{ name:"Lantern Sleeve Co-ord", price:40000, image:"images/clothes/lantern-sleeve-wide-leg-co-ord.jpg"},
+{ name:"Maxi Length Kaftan", price:15000, image:"images/clothes/maxi-length-kaftan.jpg"},
+{ name:"Mynali", price:35000, image:"images/clothes/mynali.jpg"},
+{ name:"Navy Blue Satin Jumpsuit", price:32000, image:"images/clothes/navy-blue-satin-jumpsuit.jpg"},
+{ name:"Red Formal Gown", price:40000, image:"images/clothes/red-formal-gown.jpg"},
+{ name:"Seige and Brown Gown", price:37000, image:"images/clothes/seige-and-brown-gown.jpg"},
+{ name:"Shaina Set 2.0", price:25000, image:"images/clothes/shaina-set-2-0.jpg"},
+{ name:"Tandoori Maxi Dress", price:30000, image:"images/clothes/tandoori-maxi-dress.jpg"}
 ];
 
 // ================= STORAGE =================
@@ -105,9 +105,13 @@ function showShoes(){
 
 function showHome(){
   document.getElementById("hero").style.display = "flex";
-  document.getElementById("products").style.display = "none";
-  const backBtn = document.getElementById("backBtn");
-  if(backBtn) backBtn.style.display = "none"; // hide when going home
+
+  const container = document.getElementById("products");
+  container.style.display = "none";
+  container.innerHTML = "";
+
+  // ❌ HIDE BACK BUTTON
+  document.getElementById("backBtn").style.display = "none";
 }
 
 // ================= QUANTITY =================
@@ -155,7 +159,7 @@ function addToCart(type, index){
   }
 
   saveCart();
-  alert("added to cart!");
+  showPopup("added to cart!");
 
  quantityInput.value = 1;   // ⭐ RESET CLEANLY
 
@@ -282,12 +286,22 @@ function closeCart(){
 }
 
 
-window.onload = function(){
+window.addEventListener("load", () => {
   renderCart();
-  document.getElementById("checkoutOverlay").style.display = "none";
-  closePanels();
-};
+  loadProfile();
+  checkSession();
 
+  const checkoutOverlay = document.getElementById("checkoutOverlay");
+  if(checkoutOverlay) checkoutOverlay.style.display = "none";
+
+  closePanels();
+});
+
+function saveOrderLocally(order){
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+}
 
 
 // ================= FULL CHECKOUT SYSTEM =================
@@ -310,13 +324,28 @@ function renderCheckoutSummary() {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
 
-    itemsContainer.innerHTML += `
-      <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-        <div>
-          <strong>${item.name}</strong> (x${item.quantity})
-          <br>
-          <small>₦${item.price.toLocaleString()} each</small>
-        </div>
+itemsContainer.innerHTML += `
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:8px;
+  ">
+
+    <img src="${item.image}" style="
+      width:50px;
+      height:50px;
+      object-fit:cover;
+      border-radius:6px;
+    ">
+
+    <div style="flex:1;">
+      <strong>${item.name}</strong><br>
+      <small>₦${item.price.toLocaleString()} x ${item.quantity}</small>
+    </div>
         <div>
           ₦${itemTotal.toLocaleString()}
         </div>
@@ -340,36 +369,77 @@ function updateDeliveryTotal(){
 function saveOrderToBackend(order){
 
   const token = localStorage.getItem("token");
+  const userData = localStorage.getItem("user");
 
-  if(!token){
-    alert("Please login first!");
-    window.location.href = "auth.html";
+  if(!token || !userData){
+    showPopup("Please login again");
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setTimeout(() => {
+      window.location.href = "auth.html";
+    }, 1500);
+
+    return;
+  }
+
+  const user = JSON.parse(userData);
+
+  if(!user || !user._id){
+    showPopup("Session expired");
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setTimeout(() => {
+      window.location.href = "auth.html";
+    }, 1500);
+
     return;
   }
 
   const backendOrder = {
-    items: order.items,
+    items: order.items.map(item => ({
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      quantity: item.quantity
+    })),
     amount: order.total,
-    address: order.customer.address,
-    phone: order.customer.phone,
-    name: order.customer.name,
-    paymentMethod: order.paymentMethod
+    address: order.customer?.address || order.address,
+    phone: order.customer?.phone || order.phone,
+    name: order.customer?.name || order.name,
+    paymentMethod: order.paymentMethod,
+    status: order.status || "Processing"
   };
+
+  console.log("Sending order:", backendOrder); // 🔥 DEBUG
 
   fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token   // ⭐ ADD THIS
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(backendOrder)
   })
-  .then(res => res.json())
+  .then(res => {
+    console.log("Save status:", res.status);
+
+    if(!res.ok){
+      return res.text().then(text => {
+        throw new Error(text || "Failed to save order");
+      });
+    }
+
+    return res.json();
+  })
   .then(data => {
-    console.log("Saved:", data);
+    console.log("Order saved successfully:", data);
   })
   .catch(err => {
-    console.error(err);
+    console.error("Order save error:", err);
   });
 }
 
@@ -391,14 +461,12 @@ function updateCheckoutUI(){
 let pendingTransferOrder = null;
 
 function checkout() {
-
   const token = localStorage.getItem("token");
 
-  if (!token) {
-    showToast("login before placing order");
-     showAuthChoice(); // 🔥 NEW POPUP
-    return; // stop checkout
-  }
+if (!token) { 
+  localStorage.setItem("redirectAfterLogin", "checkout"); 
+  showAuthChoice(); 
+  return; }
 
 const user = JSON.parse(localStorage.getItem("user")) || {};
 const profile = JSON.parse(localStorage.getItem("profile")) || {};
@@ -446,25 +514,24 @@ if(profile.address){
     deliveryFee: delivery,
     total,
     paymentMethod: payment,
+    email: user?.email, // ✅ ADD THIS
     status: "",
     date: new Date().toLocaleString()
   };
 
-  if (!token) {
-  localStorage.setItem("redirectAfterLogin", "checkout"); // ⭐ ADD
-  showAuthChoice();
-  return;
-}
 
   // ✅ COD
   if (payment === "cod") {
     newOrder.status = "Processing";
 
-    saveOrderToBackend(newOrder);
+saveOrderLocally(newOrder);   // ✅ ADD THIS
+saveOrderToBackend(newOrder);
     finishCheckout();
 
-    alert("Order placed! Pay on delivery.");
-    renderOrders();
+    showPopup("Order placed");
+  setTimeout(() => {
+  renderOrders();
+}, 1000);
     return;
   }
 
@@ -480,7 +547,7 @@ if(profile.address){
 
   // 3️⃣ Card Payment
   if(payment === "card") {
-    const email = "ziyaworldonline@gmail.com"; // use customer's email
+const email = user.email || "customer@email.com";
     const amount = total * 100; // convert to kobo
 
     let handler = PaystackPop.setup({
@@ -500,11 +567,13 @@ if(profile.address){
 if(data.success){
   newOrder.status = "Completed";
 
-  saveOrderToBackend(newOrder); // ✅ SEND
-
+saveOrderLocally(newOrder);  // ✅ ADD
+saveOrderToBackend(newOrder);
   finishCheckout();
-              alert("Payment successful! Ref: " + response.reference);
-              renderOrders();
+              showPopup("Payment successful! Ref: " + response.reference);
+    setTimeout(() => {
+  renderOrders();
+}, 1000);
             } else {
               alert("Payment verification failed!");
             }
@@ -512,7 +581,7 @@ if(data.success){
           .catch(err => alert("Verification error: " + err));
       },
       onClose: function(){
-        alert("Payment cancelled.");
+        showPopup("Payment cancelled.");
       }
     });
 
@@ -549,19 +618,28 @@ function closeTransferModal() {
 
 // When user clicks "I HAVE PAID"
 
-document.getElementById("confirmTransferBtn").onclick = function () {
+window.addEventListener("load", () => {
 
-  if(!pendingTransferOrder) return;
+  const btn = document.getElementById("confirmTransferBtn");
 
-  saveOrderToBackend(pendingTransferOrder); // ✅ SEND
+  if(btn){
+    btn.onclick = function () {
 
-  pendingTransferOrder = null;
+      if(!pendingTransferOrder) return;
 
-  finishCheckout();
-  closeTransferModal();
+      saveOrderLocally(pendingTransferOrder);
+      saveOrderToBackend(pendingTransferOrder);
 
-  alert("Payment recorded! Order is Pending Confirmation.");
-};
+      pendingTransferOrder = null;
+
+      finishCheckout();
+      closeTransferModal();
+
+      showPopup("Order Placed.");
+    };
+  }
+
+});
 
 let pendingCardOrder = null;
 
@@ -660,9 +738,13 @@ document.getElementById("payCardBtn").onclick = function() {
   document.getElementById("cardInputSection").style.display = "none";
   document.getElementById("paymentSuccess").style.display = "block";
 
-  setTimeout(() => {
-    pendingCardOrder.status = "Completed";
-    saveOrderToBackend(pendingCardOrder);
+setTimeout(() => {
+  pendingCardOrder.status = "Completed";
+
+  saveOrderLocally(pendingCardOrder);   // ✅ ADD THIS
+  saveOrderToBackend(pendingCardOrder); // existing
+
+  pendingCardOrder = null;
 
 
     pendingCardOrder = null;
@@ -674,7 +756,7 @@ document.getElementById("payCardBtn").onclick = function() {
     renderCart();
 
     renderOrders();
-    alert("Order placed successfully!");
+    showPopup("Order placed successfully!");
   }, 1200);
 };
 
@@ -682,7 +764,7 @@ document.getElementById("payCardBtn").onclick = function() {
 function openCheckout() {
 
   if (cart.length === 0) {
-    alert("Your cart is empty.");
+    showPopup("Your cart is empty.");
     return;
   }
 
@@ -723,9 +805,8 @@ function openOrders() {
 // Render all orders
 function renderOrders() {
   const token = localStorage.getItem("token");
-  const container = document.getElementById("ordersList");
-
-  if (!container) return console.error("Orders container not found");
+const container = document.getElementById("ordersList");
+if (!container) return;
 
 if (!token) {
   container.innerHTML = `
@@ -736,15 +817,31 @@ if (!token) {
 
   container.innerHTML = "Loading orders...";
 
-  fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders/user', {
-    headers: { 'Authorization': 'Bearer ' + token }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Failed request: " + res.status);
-    return res.json();
-  })
+fetch("https://ziyaworld-backend-r9xm.onrender.com/api/orders/user", {
+  headers: {
+    Authorization: "Bearer " + localStorage.getItem("token")
+  }
+})
+.then(res => {
+  console.log("Fetch status:", res.status); // 👈 ADD THIS
+
+  if (!res.ok) {
+    throw new Error("Failed request: " + res.status);
+  }
+
+  return res.json();
+})
 .then(data => {
-  const orders = data.orders || data;
+
+  console.log("Orders response:", data); // 👈 VERY IMPORTANT
+
+  if(!data){
+    container.innerHTML = "No orders found";
+    return;
+  }
+
+  const orders = data.orders || data || [];
+
   container.innerHTML = "";
 
   if (!orders.length) {
@@ -831,7 +928,7 @@ function openOrderDetails(id) {
   if (!token) return alert("Please login to view orders.");
 
   fetch('https://ziyaworld-backend-r9xm.onrender.com/api/orders/user', {
-    headers: { 'Authorization': 'Bearer ' + token }
+    headers: { Authorization: "Bearer " + localStorage.getItem("token") }
   })
   .then(res => res.json())
   .then(data => {
@@ -902,7 +999,7 @@ let itemsHTML = "";
   })
   .catch(err => {
     console.error(err);
-    alert("Failed to load order details");
+    showPopup("Failed to load order details");
   });
 }
 
@@ -911,15 +1008,14 @@ let itemsHTML = "";
 // ================================
 
 function openSettings() {
-  document.getElementById("settingsPanel").classList.add("active");
-}
+  closeMenu();       // close side menu
+  closePanels();     // close other panels
 
-function closePanels() {
-  document.querySelectorAll(".side-panel").forEach(panel => {
-    panel.classList.remove("active");
-  });
+  const panel = document.getElementById("settingsPanel");
+  if(panel){
+    panel.classList.add("active");
+  }
 }
-
 // ================= PROFILE SYSTEM CLEAN =================
 
 function openViewProfile() {
@@ -930,6 +1026,8 @@ function openViewProfile() {
 function openEditProfile() {
   document.getElementById("viewProfilePanel").style.display = "none";
   document.getElementById("editProfilePanel").style.display = "block";
+
+  loadEditProfile(); // 🔥 THIS IS THE FIX
 }
 
 function openSecurity() {
@@ -990,7 +1088,7 @@ function saveProfile(){
     address
   }));
 
-  alert("Profile updated!");
+  showPopup("Profile updated!");
 
   loadProfile();
 
@@ -999,19 +1097,55 @@ function saveProfile(){
 }
 
 // CHANGE PASSWORD (basic)
-function changePassword(){
+async function changePassword(){
 
-  const oldPass = document.getElementById("oldPassword").value;
-  const newPass = document.getElementById("newPassword").value;
+  const oldPass = document.getElementById("oldPassword").value.trim();
+  const newPass = document.getElementById("newPassword").value.trim();
 
   if(!oldPass || !newPass){
     alert("Fill all fields");
     return;
   }
 
-  alert("Password updated successfully");
+  const token = localStorage.getItem("token");
 
-  backToSettings();
+  if(!token){
+    alert("Please login again");
+    return;
+  }
+
+  try {
+    const res = await fetch("https://ziyaworld-backend-r9xm.onrender.com/api/auth/change-password", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({
+        oldPassword: oldPass,
+        newPassword: newPass
+      })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      alert(data.message || "Failed to change password");
+      return;
+    }
+
+    showPopup("Password changed successfully 🔐");
+
+    // clear inputs
+    document.getElementById("oldPassword").value = "";
+    document.getElementById("newPassword").value = "";
+
+    backToSettings();
+
+  } catch(err){
+    console.error(err);
+    alert("Error changing password");
+  }
 }
 
 function openTerms() {
@@ -1020,15 +1154,14 @@ function openTerms() {
 }
 
 function logoutUser(){
-
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  localStorage.removeItem("profile");
   localStorage.removeItem("loginTime");
+  localStorage.removeItem("cart"); // optional if you want full reset
 
-  showPopup("Logged out");
-
-  // Redirect to your homepage
-  window.location.href = "index.html"; // ✅ goes to main site
+  showPopup("Logged out", "success");
+  window.location.href = "index.html";
 }
 
 // Assuming you have a file input for the user to upload their profile
@@ -1053,23 +1186,19 @@ editProfileUpload.addEventListener("change", (e) => {
 
 // ================= CONTACT =================
 
-function openContact(){
-  closeMenu(); // 
-  closePanels();
+function openContact() {
+    closeMenu();       // close side menu
+  closePanels();     // close other panels
   document.getElementById("contactPanel").classList.add("active");
 }
 
+function closePanels() {
+  document.querySelectorAll(".side-panel").forEach(p => {
+    p.classList.remove("active");
+  });
+}
+
 // ================= HOME =================
-
-function showHome(){
-  document.getElementById("hero").style.display = "block";
-  document.getElementById("products").style.display = "none";
-  document.getElementById("backBtn").style.display = "none";
-}
-
-function closeCheckout() {
-  document.getElementById("checkoutOverlay").style.display = "none";
-}
 
 function loadCheckoutSummary() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -1133,6 +1262,29 @@ if(savedColor){
   document.documentElement.style.setProperty("--main-color", savedColor);
 }
 
+// ================= BACKGROUND MODE =================
+
+function setMode(mode) {
+  if (mode === "dark") {
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("mode", "dark");
+  } else {
+    document.body.classList.remove("dark-mode");
+    localStorage.setItem("mode", "light");
+  }
+}
+
+// Load saved mode
+window.addEventListener("load", () => {
+  const savedMode = localStorage.getItem("mode");
+
+  if (savedMode === "dark") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+});
+
 function openViewer(name, price, image){
   document.getElementById("viewerImg").src = image;
   document.getElementById("viewerName").innerText = name;
@@ -1170,15 +1322,6 @@ function closeMenu(){
   if(menu) menu.classList.remove("active");
 }
 
-const backBtn = document.getElementById('backBtn');
-
-if (backBtn) {
-  backBtn.style.display = 'none';
-
-  backBtn.addEventListener('click', () => {
-    backBtn.style.display = 'none';
-  });
-}
 
 function showToast(message, type = "success") {
   const toast = document.getElementById("toast");
@@ -1201,6 +1344,7 @@ function goToAuth(){
 
 function checkSession(){
   const loginTime = localStorage.getItem("loginTime");
+  localStorage.setItem("loginTime", Date.now());
 
   if(!loginTime) return;
 
@@ -1214,7 +1358,7 @@ function checkSession(){
     localStorage.removeItem("user");
     localStorage.removeItem("loginTime");
 
-    showToast("Session expired. Login again", "error");
+    showPopup("Session expired. Login again", "error");
   }
 }
 
@@ -1274,3 +1418,283 @@ window.addEventListener("load", () => {
   }
 
 });
+
+
+
+function showPopup(message){
+  const popup = document.createElement("div");
+  popup.innerText = message;
+
+  popup.style.position = "fixed";
+  popup.style.top = "20px";
+  popup.style.left = "50%";
+  popup.style.transform = "translateX(-50%)";
+  popup.style.background = "#000";
+  popup.style.color = "#fff";
+  popup.style.padding = "15px 25px";
+  popup.style.borderRadius = "6px";
+  popup.style.zIndex = "9999";
+
+  document.body.appendChild(popup);
+
+  setTimeout(() => popup.remove(), 2000);
+}
+
+window.addEventListener("load", () => {
+  loadProfile();
+});
+
+
+
+document.getElementById("backBtn").onclick = function(){
+  showHome();
+};
+
+function openTerms() {
+  document.getElementById("settingsPanel").style.display = "none";
+  document.getElementById("termsPanel").style.display = "block";
+}
+
+function closeTerms() {
+  document.getElementById("termsPanel").style.display = "none";
+  document.getElementById("settingsPanel").style.display = "block";
+}
+
+window.addEventListener("load", () => {
+  closePanels();
+});
+
+
+function closeAllPanels(){
+
+  // close all side panels
+  document.querySelectorAll('.side-panel').forEach(p => {
+    p.classList.remove('active');
+  });
+
+  // close menu
+  const menu = document.getElementById("sideMenu");
+  if(menu) menu.classList.remove("active");
+
+  // close overlay panels
+  document.querySelectorAll('.overlay-panel').forEach(p => {
+    p.style.display = "none";
+  });
+
+}
+
+
+// ================= HISTORY SYSTEM =================
+
+function openHistoryModal(){
+
+  // ✅ CLOSE orders panel first
+  const orderPanel = document.getElementById("orderPanel");
+  if(orderPanel){
+    orderPanel.classList.remove("active");
+  }
+
+  // (optional: close any other panels too)
+  closePanels();
+
+  // ✅ OPEN history modal
+  document.getElementById("historyModal").style.display = "flex";
+
+  renderHistory();
+}
+
+function closeHistoryModal(){
+  document.getElementById("historyModal").style.display = "none";
+
+  // reopen orders panel smoothly
+  const orderPanel = document.getElementById("orderPanel");
+  if(orderPanel){
+    orderPanel.classList.add("active");
+  }
+}
+
+// Render history orders
+async function renderHistory(){
+
+  const container = document.getElementById("historyContainer");
+  const token = localStorage.getItem("token");
+
+  try {
+
+    const res = await fetch("https://ziyaworld-backend-r9xm.onrender.com/api/orders/user/history", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    const orders = data.orders || [];
+
+    if(!orders.length){
+      container.innerHTML = "<p>No order history</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+
+    // ✅ FIX: do NOT mutate original array
+const reversedOrders = [...orders].reverse();
+
+reversedOrders.forEach((order) => {
+
+  const totalItems = order.items.reduce((sum,i)=> sum + i.quantity, 0);
+  const firstImage = order.items[0]?.image || "";
+
+  container.innerHTML += `
+    <div class="history-card" onclick="openFullOrder('${order._id}')">
+
+      <img src="${firstImage}" class="history-img">
+
+      <div class="history-info">
+        <h4>₦${order.amount.toLocaleString()}</h4>
+        <p>${totalItems} item(s)</p>
+        <small>${new Date(order.createdAt).toLocaleDateString()}</small>
+      </div>
+
+      <button class="view-btn" onclick="event.stopPropagation(); openFullOrder('${order._id}')">
+        View
+      </button>
+
+    </div>
+  `;
+});
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Error loading history</p>";
+  }
+}
+
+
+// Open full order details
+async function openFullOrder(id){
+
+  // 🔒 get token
+  const token = localStorage.getItem("token");
+
+  try {
+
+    // 📡 fetch history orders
+    const res = await fetch("https://ziyaworld-backend-r9xm.onrender.com/api/orders/user/history", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+    const orders = data.orders || [];
+
+    // ✅ find correct order by ID
+    const order = orders.find(o => o._id === id);
+
+    if(!order){
+      alert("Order not found");
+      return;
+    }
+
+    // ✅ close history modal when opening details
+    document.getElementById("historyModal").style.display = "none";
+
+    const container = document.getElementById("fullOrderContent");
+
+    // ✅ safe customer data (fix your error)
+    const name = order.customer?.name || order.name || "N/A";
+    const phone = order.customer?.phone || order.phone || "N/A";
+    const address = order.customer?.address || order.address || "N/A";
+
+    // ================= ITEMS GRID =================
+    let itemsHTML = `<div class="order-grid">`;
+
+    order.items.forEach(item => {
+      itemsHTML += `
+        <div class="order-item">
+          <img src="${item.image}">
+          <p class="item-name">${item.name}</p>
+          <p>Qty: ${item.quantity}</p>
+          <p class="price">₦${item.price.toLocaleString()}</p>
+        </div>
+      `;
+    });
+
+    itemsHTML += `</div>`;
+
+    // ================= STATUS =================
+    const finalStatus = getFinalStatus(order);
+
+    // ================= FULL CONTENT =================
+    container.innerHTML = `
+      <div class="order-top">
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Date:</strong> ${new Date(order.createdAt).toLocaleString()}</p>
+      </div>
+
+      <hr>
+
+      ${itemsHTML}
+
+      <hr>
+
+      <div class="order-bottom">
+        <h3>Total: ₦${order.amount.toLocaleString()}</h3>
+
+        <p>
+          <strong>Status:</strong> 
+          <span class="status-badge ${finalStatus.toLowerCase()}">
+            ${finalStatus}
+          </span>
+        </p>
+      </div>
+    `;
+
+    // ✅ open modal
+    document.getElementById("fullOrderModal").style.display = "flex";
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load order details");
+  }
+}
+
+
+
+// Close full order modal
+function closeFullOrderModal(){
+
+  // ❌ close full order
+  document.getElementById("fullOrderModal").style.display = "none";
+
+  // ✅ reopen history
+  document.getElementById("historyModal").style.display = "flex";
+}
+
+function getFinalStatus(order){
+
+  const status = (order.status || "").toLowerCase();
+
+  // ✅ If it was EVER delivered → ALWAYS Delivered
+  if(
+    status.includes("deliver") ||
+    status.includes("complete")
+  ){
+    return "Delivered";
+  }
+
+  // ❌ If cancelled without delivery
+  if(
+    status.includes("cancel") ||
+    status.includes("delete")
+  ){
+    return "Cancelled";
+  }
+
+  // 🔥 ANYTHING ELSE = Cancelled (force rule)
+  return "Cancelled";
+}

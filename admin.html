@@ -24,13 +24,49 @@
 <div id="adminDashboard">
   <button class="logout-btn" onclick="logout()">Logout</button>
 
+
   <h2>Admin Dashboard</h2>
+
+<!-- ===== ADMIN HISTORY PANEL ===== -->
+<div id="adminHistoryPanel" class="history-modal">
+
+  <div class="history-box">
+
+    <span class="close-btn" onclick="closeAdminHistory()">✖</span>
+
+    <h2>📜 History</h2>
+
+    <div id="adminHistoryContainer"></div>
+
+  </div>
+</div>
+
+
+<!-- ===== ADMIN ORDER DETAILS MODAL ===== -->
+<div id="adminOrderModal" class="full-order-modal">
+
+  <div class="full-order-box">
+
+    <span class="close-btn" onclick="closeAdminOrder()">✖</span>
+
+    <div id="adminOrderContent"></div>
+
+  </div>
+
+</div>
+
+
+<!-- BUTTON TO OPEN -->
+<button onclick="openAdminHistory()" class="history-btn">
+  📜 History
+</button>
+
 
   <table id="ordersTable">
     <thead>
       <tr>
         <th>Order ID</th>
-        <th>User Email</th>
+        <th>Customer Details</th>
         <th>Amount</th>
         <th>Status</th>
       </tr>
@@ -39,6 +75,42 @@
   </table>
 </div>
 
-</body>
+<div id="orderModal" class="order-modal">
+  <div class="order-modal-box">
+
+    <span class="close-modal" onclick="closeOrderModal()">✖</span>
+
+    <h2>Order Details</h2>
+
+    <div id="orderDetailsContent"></div>
+
+  </div>
+</div>
+
+<div id="popupOverlay" class="popup-overlay">
+  <div class="popup-box">
+    <p id="popupMessage"></p>
+  </div>
+</div>
+
+<div id="confirmBox">
+  <div class="confirm-card">
+
+    <div class="confirm-icon">🗑</div>
+
+    <h3>Delete</h3>
+    <p id="confirmText">Are you sure you want to do this?</p>
+
+    <div class="confirm-actions">
+      <button id="confirmCancel">Cancel</button>
+      <button id="confirmOk">Confirm</button>
+    </div>
+
+  </div>
+</div>
+
+
 <script src="admin.js" defer></script>
+
+</body>
 </html>

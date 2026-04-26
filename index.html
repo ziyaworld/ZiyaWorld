@@ -11,7 +11,7 @@
 
   <!-- FontAwesome -->
   <link rel="stylesheet" 
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
@@ -26,6 +26,8 @@
   <span class="close-modal" onclick="closeImage()">✕</span>
   <img id="modalImg">
 </div>
+
+<body class="home-page"></body>
 
   <div id="toast" class="toast"></div>
 
@@ -56,7 +58,17 @@
 <a onclick="openSettings()">Settings</a>
 <a onclick="openContact()">Contact</a>
 
+
+<div class="menu-auth-section">
+
+  <button id="menuLoginBtn" onclick="goToLogin()">Login</button>
+
+  <button id="menuSignupBtn" onclick="goToSignup()">Sign Up</button>
+
 </div>
+
+</div>
+
 
 
 <!-- ================= HERO ================= -->
@@ -86,17 +98,20 @@
 
 <!-- ================= CART PANEL ================= -->
 <div class="side-panel" id="cartPanel">
-  <div class="close" onclick="closePanels()">✖</div>
 
-  <h2>Your Cart</h2>
+  <div class="panel-header">
+    <h2>🛒 Cart</h2>
+    <div class="close" onclick="closePanels()">✖</div>
+  </div>
 
   <div id="cartItems"></div>
 
-  <h3 id="cartTotal">Total: ₦0</h3>
+  <h3 id="cartTotal"></h3>
 
-<button onclick="openCheckout()" class="checkout-btn">
-Proceed Order
-</button>
+  <button class="panel-btn" onclick="openCheckout()">
+    Checkout
+  </button>
+
 </div>
 
 
@@ -157,50 +172,24 @@ Proceed Order
 <!-- REQUIRED: Paystack library -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const payButton = document.getElementById("payCardBtn");
-
-  if (!payButton) return;
-
-  payButton.addEventListener("click", () => {
-    const amount = 55000; // price in Naira
-    const email = "ziyaworldonline@gmail.com"; // customer email
-    const orderId = "1234567890abcdef"; // example order ID
-
-    let handler = PaystackPop.setup({
-      key: "pk_test_e42bfdd67356f1f0db6f49574934828cba61c233", // PUBLIC KEY
-      email: email,
-      amount: amount * 100, // in kobo
-      ref: '' + Math.floor(Math.random() * 1000000000 + 1),
-      metadata: { orderId: orderId },
-      callback: function(response) {
-        fetch(`https://ziyaworld-backend-r9xm.onrender.com/api/payment/verify/${response.reference}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              alert("Payment successful! Order confirmed.");
-              window.location.href = "/orders.html";
-            } else {
-              alert("Payment verification failed.");
-            }
-          });
-      },
-      onClose: function() {
-        alert("Payment was cancelled.");
-      }
-    });
-
-    handler.openIframe();
-  });
-});
-</script>
 
 <!-- ================= ORDERS PANEL ================= -->
 <div class="side-panel" id="orderPanel">
-  <div class="close" onclick="closePanels()">✖</div>
-  <h2>My Orders</h2>
+
+  <div class="panel-header">
+    <h2>📦 Orders</h2>
+    <div class="close" onclick="closePanels()">✖</div>
+  </div>
+
+  <!-- HISTORY BUTTON -->
+  <div class="history-top">
+    <button class="history-btn" onclick="openHistoryModal()">
+     🕘 History
+    </button>
+  </div>
+
   <div id="ordersList"></div>
+
 </div>
 
 
@@ -239,6 +228,16 @@ document.addEventListener("DOMContentLoaded", () => {
     <button class="theme-btn gold" onclick="changeTheme('#b8860b')"></button>
   </div>
 
+    <!-- BACKGROUND MODE (NEW) -->
+  <div class="settings-section">
+    <h3>🌓 Background Mode</h3>
+
+    <div class="mode-buttons">
+      <button onclick="setMode('light')" class="mode-btn">☀️ Light</button>
+      <button onclick="setMode('dark')" class="mode-btn">🌙 Dark</button>
+    </div>
+  </div>
+
   <!-- SECURITY -->
   <div class="settings-item" onclick="openSecurity()">
     🔒 Security
@@ -257,75 +256,178 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 <!-- ================= PROFILE VIEW PANEL ================= -->
-<div id="viewProfilePanel" class="overlay-panel" style="display:none;">
-  <span onclick="backToSettings()">✖</span>
+<div id="viewProfilePanel" class="overlay-panel profile-modern" style="display:none;">
+  <span onclick="backToSettings()" class="close-x">✖</span>
 
-  <h2>My Profile</h2>
+  <h2>👤 My Profile</h2>
 
-  <div class="profile-box">
-<img id="profileImage" src="images/default-profile.png" class="profile-img-square">
+  <div class="profile-card">
 
-    <p><strong>Name:</strong> <span id="viewName"></span></p>
-    <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-    <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-    <p><strong>Address:</strong> <span id="viewAddress"></span></p>
+    <img id="profileImage" src="images/default-profile.jpg" class="profile-avatar">
 
-<button class="glass-btn" onclick="openEditProfile()">Edit Profile</button>
+    <div class="profile-info">
+      <div><strong>Name:</strong> <span id="viewName"></span></div>
+      <div><strong>Email:</strong> <span id="viewEmail"></span></div>
+      <div><strong>Phone:</strong> <span id="viewPhone"></span></div>
+      <div><strong>Address:</strong> <span id="viewAddress"></span></div>
+    </div>
+
+    <button class="profile-btn" onclick="openEditProfile()">
+      ✏️ Edit Profile
+    </button>
+
   </div>
 </div>
 
 <!-- ================= EDIT PROFILE PANEL ================= -->
-<div id="editProfilePanel" class="overlay-panel" style="display:none;">
-  <span onclick="backToViewProfile()">✖</span>
+<div id="editProfilePanel" class="overlay-panel profile-modern" style="display:none;">
+  <span onclick="backToViewProfile()" class="close-x">✖</span>
 
-  <h2>Edit Profile</h2>
+  <h2>✏️ Edit Profile</h2>
 
-     <!-- Square preview above inputs -->
-  <img id="editProfileImage" src="images/default-profile.png" alt="Profile Picture" class="profile-img-square">
-  <input type="file" id="editProfileUpload" accept="image/*">
-  
-  <input id="editName" placeholder="Full Name">
-  <input id="editEmail" placeholder="Email">
-  <input id="editPhone" placeholder="Phone">
-  <input id="editAddress" placeholder="Address">
+  <div class="profile-card">
 
-<button class="glass-btn" onclick="saveProfile()">Save</button>
+    <img id="editProfileImage" src="images/default-profile.jpg" class="profile-avatar">
+
+    <input type="file" id="editProfileUpload" accept="image/*">
+
+    <input id="editName" placeholder="Full Name">
+    <input id="editEmail" placeholder="Email">
+    <input id="editPhone" placeholder="Phone">
+    <input id="editAddress" placeholder="Address">
+
+    <button class="profile-btn" onclick="saveProfile()">
+      💾 Save Changes
+    </button>
+
+  </div>
 </div>
 
 <!-- ================= TERMS PANEL ================= -->
-<div id="termsPanel" class="overlay-panel" style="display:none;">
-  <span onclick="backToSettings()">✖</span>
+<div id="termsPanel" class="overlay-panel terms-modern" style="display:none;">
+<span onclick="closeTerms()" class="close-x">✖</span>
 
-  <h2>Terms & Conditions</h2>
+  <h2>📜 Terms & Conditions</h2>
 
-  <p>
-    Welcome to ZiyaWorld. By using this platform, you agree to the following terms:
+  <p class="terms-intro">
+    Welcome to <strong>ZiyaWorld</strong> ✨ — a premium fashion destination dedicated to elegance, confidence, and luxury style.
+    By accessing or using our platform, you agree to comply with the following Terms and Conditions.
+    Please read them carefully before placing any order.
   </p>
 
-  <ul>
-    <li>All orders must be confirmed before processing.</li>
-    <li>Payments must be completed before shipping.</li>
-    <li>No refunds after delivery unless item is damaged.</li>
-    <li>Delivery times may vary depending on location.</li>
-  </ul>
+  <div class="terms-box">
+
+    <div class="term-item">
+      <span>🛍️</span>
+      <p>
+        <strong>Order Confirmation:</strong> All purchases must be successfully confirmed before processing begins.
+        Once an order is placed, it is considered final unless otherwise stated.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>💳</span>
+      <p>
+        <strong>Payment Policy:</strong> Full payment is required before dispatch.
+        We accept multiple payment methods including card, bank transfer, and cash on delivery (where applicable).
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>🚚</span>
+      <p>
+        <strong>Delivery Timeline:</strong> Delivery times may vary depending on location, logistics, and external factors beyond our control.
+        We aim to deliver orders as quickly and safely as possible.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>📦</span>
+      <p>
+        <strong>Product Inspection:</strong> Customers are encouraged to review items upon delivery.
+        Any concerns should be reported immediately for review.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>🔁</span>
+      <p>
+        <strong>Returns & Refunds:</strong> Refunds or replacements are only available for defective, damaged, or incorrect items.
+        Items must remain in original condition where applicable.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>⚠️</span>
+      <p>
+        <strong>Policy Updates:</strong> ZiyaWorld reserves the right to update or modify these terms at any time without prior notice.
+        Continued use of the platform indicates acceptance of changes.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>🔐</span>
+      <p>
+        <strong>User Responsibility:</strong> Users are responsible for maintaining accurate account information,
+        including contact details and delivery addresses.
+      </p>
+    </div>
+
+    <div class="term-item">
+      <span>✨</span>
+      <p>
+        <strong>Brand Experience:</strong> ZiyaWorld is committed to providing a premium shopping experience,
+        ensuring quality, style, and customer satisfaction in every order.
+      </p>
+    </div>
+
+  </div>
+
+  <p class="terms-footer">
+    By continuing to use ZiyaWorld, you acknowledge that you have read, understood, and agreed to these Terms.
+    <br><br>
+    Thank you for choosing <strong>ZiyaWorld 💖</strong>
+  </p>
 </div>
 
 <!-- ================= SECURITY PANEL ================= -->
-<div id="securityPanel" class="overlay-panel" style="display:none;">
+<div id="securityPanel" class="overlay-panel security-modern" style="display:none;">
   <span onclick="backToSettings()">✖</span>
 
-  <h2>Change Password</h2>
+  <h2>🔐 Security Settings</h2>
 
-  <input id="oldPassword" type="password" placeholder="Old Password">
-  <input id="newPassword" type="password" placeholder="New Password">
+  <p class="security-sub">
+    Manage your account password securely. Always use a strong password for better protection.
+  </p>
 
-<button class="glass-btn" onclick="changePassword()">Update Password</button>
+  <div class="security-card">
+
+    <label>Current Password</label>
+    <input id="oldPassword" type="password" placeholder="Enter old password">
+
+    <label>New Password</label>
+    <input id="newPassword" type="password" placeholder="Enter new password">
+
+    <div class="password-hint">
+      ⚠️ Use at least 6–8 characters with numbers or symbols for better security.
+    </div>
+
+    <button class="security-btn" onclick="changePassword()">
+      Update Password
+    </button>
+
+  </div>
+
+  <div class="security-footer">
+    🔒 Your password is stored securely and only used for authentication.
+  </div>
+
 </div>
 
 <!-- ================= CONTACT PANEL ================= -->
 <div class="side-panel" id="contactPanel">
 
-  <div class="close" onclick="closePanels()">✖</div>
+<button class="close-btn" onclick="closePanels()">✖</button>
 
   <div class="contact-card colorful">
     <h2>ZiyaWorld</h2>
@@ -361,6 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   </div>
 
+    <p class="hours-title">Opening Hours</p>
   <p class="hours">Mon - Sat | 9am - 6pm</p>
 
 </div>
@@ -437,12 +540,49 @@ document.addEventListener("DOMContentLoaded", () => {
   <div id="paymentSuccess" style="display:none; background:#fff; padding:20px; border-radius:10px; width:320px; text-align:center;">
     <h3>Payment Successful ✅</h3>
   </div>
+  
+  </div> <!-- CLOSE cardPaymentModal -->
 
-
-<!-- Tesseract.js -->
+<!-- Tesseract -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 
-<!-- JS -->
+
+
+<!-- ================= HISTORY MODAL ================= -->
+<div id="historyModal" class="history-modal">
+
+  <div class="history-box">
+
+    <!-- ✅ FORCE CLOSE BUTTON -->
+    <div class="history-close" onclick="closeHistoryModal()">✖</div>
+
+    <h2>🕘 History</h2>
+
+    <div id="historyContainer"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= FULL ORDER MODAL ================= -->
+<div id="fullOrderModal" class="full-order-modal">
+
+  <div class="full-order-box">
+
+    <!-- ✅ CLOSE BUTTON -->
+    <span class="close-btn" onclick="closeFullOrderModal()">✖</span>
+
+    <h2>Order Details</h2>
+
+    <div id="fullOrderContent"></div>
+
+  </div>
+
+</div>
+
+
+<!-- Your main JS -->
 <script src="script.js"></script>
 
 </body>

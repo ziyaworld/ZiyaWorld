@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auth</title>
+  <title>ZiyaWorld Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="auth.css">
 </head>
 <body>
@@ -10,30 +11,72 @@
 
   <div class="auth-box">
 
+    <!-- CLOSE BUTTON (optional) -->
+    <span class="close-auth" onclick="goBack()">✖</span>
+
     <h2 id="authTitle">Login</h2>
 
+    <!-- NAME (SIGNUP ONLY) -->
     <input type="text" id="authName" placeholder="Full Name" style="display:none;">
+
+    <!-- EMAIL -->
     <input type="email" id="authEmail" placeholder="Email">
+
+    <!-- PASSWORD -->
     <input type="password" id="authPassword" placeholder="Password">
 
+    <!-- ✅ FORGOT PASSWORD (UNDER PASSWORD INPUT) -->
+    <a href="#" id="forgotLink" class="highlight-text">
+  Forgot Password?</a>
+
+    <!-- TERMS -->
     <label id="agreeLabel" style="display:none;">
       <input type="checkbox" id="agreeTerms">
       I agree to Terms & Conditions
     </label>
 
-    <button id="loginBtn" onclick="login()">Login</button>
-    <button id="signupBtn" onclick="signup()" style="display:none;">Sign Up</button>
+    <!-- BUTTONS -->
+    <div class="auth-buttons">
+      <button id="loginBtn" onclick="login()">Login</button>
+      <button id="signupBtn" onclick="signup()" style="display:none;">Sign Up</button>
+    </div>
 
-    <p id="toggleAuth" onclick="toggleAuth()">
-      Don't have an account? Sign up
-    </p>
+    <!-- TOGGLE -->
+<p id="toggleAuth" onclick="toggleAuth()">
+  Don't have an account? <span class="highlight">Sign up</span>
+</p>
+  </div>
 
-    <p onclick="goBack()" style="cursor:pointer;">Close</p>
+</div>
+
+<!-- 🔐 FORGOT PASSWORD MODAL -->
+<div id="forgotModal" class="forgot-modal">
+
+  <div class="forgot-box">
+
+    <h3>Reset Password</h3>
+
+    <input type="email" id="otpEmail" placeholder="Enter your email">
+
+    <button onclick="sendOTP()">Send Code</button>
+
+    <input type="text" id="otpCode" placeholder="Enter code">
+
+    <input type="password" id="otpPassword" placeholder="New password">
+
+    <div class="forgot-buttons">
+      <button onclick="resetPassword()">Reset</button>
+      <button class="cancel-btn" onclick="closeForgot()">Cancel</button>
+    </div>
 
   </div>
 
 </div>
 
+<!-- TOAST (OPTIONAL) -->
+<div id="toast" class="toast"></div>
+
 <script src="auth.js" defer></script>
+
 </body>
 </html>
